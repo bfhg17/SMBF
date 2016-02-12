@@ -1,7 +1,11 @@
 
+import DB.JavaConnection;
 import java.awt.Color;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
+import java.util.logging.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,21 +18,51 @@ import java.awt.Point;
  * @author Bradley
  */
 public class Principal extends javax.swing.JFrame {
-int x,y; 
+    int x,y; 
     /**
      * Creates new form NewJFrame
      */
+    DefaultTableModel modeloTablaNuevoMaterial;
+    DB.JavaConnection con = new DB.JavaConnection();
+    
     public Principal() {
-       setUndecorated(false);
+        modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnas());
+        setFilas();//Inicializacion de los dos metodos para las tablas
+        setUndecorated(false);
         initComponents();
-       // jLabel1.setFocusable(false)  ; 
-  //  jButton1.setFocusable(false)  ; 
-    //jButton2.setFocusable(false)  ; 
-
        setLocationRelativeTo(null);
        this.getContentPane().setBackground(Color.white);
     }
 
+    
+    private String[] getColumnas(){
+    
+    String columna[] = new String[]{"ID","Nombre","Categoria","Tipo de Unidad","Cantidad Mínima"};
+    return columna;
+    }
+    
+    private void setFilas(){
+    
+        try{
+            String sql = "SELECT id_material,nombre,categoria,tipoUnidad,cantidadMinima FROM material";
+            PreparedStatement us = con.connect().prepareStatement(sql);
+            ResultSet res = us.executeQuery();
+            
+            Object datos[]=new Object[5];
+            
+                while(res.next()){
+                    for(int i = 0; i < 5 ; i++){
+                        datos[i] = res.getObject(i + 1);
+                    }
+                    modeloTablaNuevoMaterial.addRow(datos);
+                }
+            res.close();
+    
+        }   catch(SQLException e){
+        System.out.println("Error Mysql");
+     
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,10 +77,10 @@ int x,y;
         jPanel1 = new javax.swing.JPanel();
         TadP3 = new javax.swing.JTabbedPane();
         Pan3 = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jTable7 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox();
         jButton7 = new javax.swing.JButton();
+        jScrollPane10 = new javax.swing.JScrollPane();
+        tablaNuevoMaterial = new javax.swing.JTable();
         Pan9 = new javax.swing.JPanel();
         lblCodigos = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -84,8 +118,6 @@ int x,y;
         lblCategorias = new javax.swing.JLabel();
         jComboBoxCategoria = new javax.swing.JComboBox();
         jButton13 = new javax.swing.JButton();
-        jScrollPane10 = new javax.swing.JScrollPane();
-        tablaNuevoMaterial = new javax.swing.JTable();
         jButton14 = new javax.swing.JButton();
         jtxtDescrip = new javax.swing.JFormattedTextField();
         jtxtCodigo = new javax.swing.JFormattedTextField();
@@ -93,6 +125,8 @@ int x,y;
         jLabel20 = new javax.swing.JLabel();
         jComboBoxTipo = new javax.swing.JComboBox();
         jTxtCantidadMinima = new javax.swing.JFormattedTextField();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        jTable7 = new javax.swing.JTable();
         Pan10 = new javax.swing.JPanel();
         lblCodes = new javax.swing.JLabel();
         lblDe = new javax.swing.JLabel();
@@ -414,46 +448,43 @@ int x,y;
 
         TadP3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
 
-        jTable7.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, "", null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Código", "Tipo De Unidad", "Descripción", "Cantidad", "Ubicación"
-            }
-        ));
-        jScrollPane7.setViewportView(jTable7);
-
         jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "General", "Acueducto", "Materiales", "Limpieza", "Suministros de oficina", "Herramientas", "Material mínimo" }));
 
         jButton7.setText("Cargar");
+
+        tablaNuevoMaterial.setModel(modeloTablaNuevoMaterial);
+        jScrollPane10.setViewportView(tablaNuevoMaterial);
 
         javax.swing.GroupLayout Pan3Layout = new javax.swing.GroupLayout(Pan3);
         Pan3.setLayout(Pan3Layout);
         Pan3Layout.setHorizontalGroup(
             Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Pan3Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap()
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35)
+                .addGap(39, 39, 39)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
+                .addContainerGap(400, Short.MAX_VALUE))
+            .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(Pan3Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
+                    .addGap(5, 5, 5)))
         );
         Pan3Layout.setVerticalGroup(
             Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan3Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+            .addGroup(Pan3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7))
-                .addGap(41, 41, 41)
-                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(378, Short.MAX_VALUE))
+            .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan3Layout.createSequentialGroup()
+                    .addContainerGap(51, Short.MAX_VALUE)
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
         );
 
         jComboBox1.getAccessibleContext().setAccessibleName("");
@@ -771,19 +802,6 @@ int x,y;
             }
         });
 
-        tablaNuevoMaterial.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Código ", "Nombre", "Categoría  ", "Cantidad Mínima", "Tipo de Unidad"
-            }
-        ));
-        jScrollPane10.setViewportView(tablaNuevoMaterial);
-
         jButton14.setText("Crear");
 
         try {
@@ -815,12 +833,30 @@ int x,y;
         jLabel20.setText("Tipo de unidad");
 
         jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bolsa", "Caja", "Cubeta", "Galón", "1/4 Galón", "Laminas", "Litros", "Kit", "Kilo", "Paquete", "Pares", "Unidad" }));
+        jComboBoxTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoActionPerformed(evt);
+            }
+        });
 
         try {
             jTxtCantidadMinima.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+
+        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, "", null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Código", "Tipo De Unidad", "Descripción", "Cantidad", "Ubicación"
+            }
+        ));
+        jScrollPane7.setViewportView(jTable7);
 
         javax.swing.GroupLayout Pan11Layout = new javax.swing.GroupLayout(Pan11);
         Pan11.setLayout(Pan11Layout);
@@ -829,7 +865,6 @@ int x,y;
             .addGroup(Pan11Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane10)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan11Layout.createSequentialGroup()
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDescr)
@@ -856,13 +891,13 @@ int x,y;
                         .addGap(114, 114, 114))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan11Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan11Layout.createSequentialGroup()
-                                .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(291, 291, 291))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan11Layout.createSequentialGroup()
-                                .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(286, 286, 286))))))
+                        .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton14, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(291, 291, 291))
+                    .addGroup(Pan11Layout.createSequentialGroup()
+                        .addComponent(jScrollPane7)
+                        .addContainerGap())))
         );
         Pan11Layout.setVerticalGroup(
             Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -892,10 +927,10 @@ int x,y;
                 .addGap(29, 29, 29)
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane10, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
+                .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jButton14)
-                .addContainerGap(64, Short.MAX_VALUE))
+                .addGap(31, 31, 31))
         );
 
         TadP3.addTab("Nuevo Material", Pan11);
@@ -3571,17 +3606,17 @@ int x,y;
 
         
        
-        tablaNuevoMaterial.setValueAt(jtxtCodigo.getText(),0,0);
-        tablaNuevoMaterial.setValueAt(jtxtDescrip.getText(),0,1);
-        tablaNuevoMaterial.setValueAt(jComboBoxCategoria.getSelectedItem(),0,2);
-        tablaNuevoMaterial.setValueAt(jTxtCantidadMinima.getText(),0,3);
-        tablaNuevoMaterial.setValueAt(jComboBoxTipo.getSelectedItem(),0,4);
+       
     
     }//GEN-LAST:event_jButton13ActionPerformed
 
     private void jComboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxCategoriaActionPerformed
+
+    private void jComboBoxTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTipoActionPerformed
 
     /**
      * @param args the command line arguments
