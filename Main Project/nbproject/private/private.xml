@@ -3,11 +3,17 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/SBMF/ProtV7.1/src/Logica/ordenEditor.java</file>
-            <file>file:/E:/SBMF/ProtV7.1/src/Logica/llenarOrden.java</file>
-            <file>file:/E:/SBMF/ProtV7.1/src/Logica/ordenRender.java</file>
-            <file>file:/E:/SBMF/ProtV7.1/src/Screenshot_1.png</file>
-            <file>file:/E:/SBMF/ProtV7.1/src/Principal.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Admi_Usuarios.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/ordenEditor.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Usuarios.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/DB/GestorConexionBD.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/llenarOrden.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Material.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Inventario.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Principal.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/DB/Main.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Solicitud_de_materiales.java</file>
+            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Login.java</file>
         </group>
     </open-files>
 </project-private>

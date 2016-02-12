@@ -50,4 +50,7 @@ public class Inventario extends Material{
         this.ubicacion = ubicacion;
     }
     
+    
+    
+    
 }

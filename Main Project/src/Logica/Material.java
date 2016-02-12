@@ -49,4 +49,10 @@ public class Material {
         this.cantidadMinima = cantidadMinima;
     }
     
+  
+      
+    
+    
+    
+    
 }

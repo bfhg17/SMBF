@@ -46,6 +46,7 @@ int x,y;
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable7 = new javax.swing.JTable();
         jComboBox1 = new javax.swing.JComboBox();
+        jButton7 = new javax.swing.JButton();
         Pan9 = new javax.swing.JPanel();
         lblCodigos = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
@@ -89,9 +90,9 @@ int x,y;
         jtxtDescrip = new javax.swing.JFormattedTextField();
         jtxtCodigo = new javax.swing.JFormattedTextField();
         jLabel1 = new javax.swing.JLabel();
-        jTxtCantidadMinima = new javax.swing.JTextField();
         jLabel20 = new javax.swing.JLabel();
         jComboBoxTipo = new javax.swing.JComboBox();
+        jTxtCantidadMinima = new javax.swing.JFormattedTextField();
         Pan10 = new javax.swing.JPanel();
         lblCodes = new javax.swing.JLabel();
         lblDe = new javax.swing.JLabel();
@@ -429,6 +430,8 @@ int x,y;
         jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "General", "Acueducto", "Materiales", "Limpieza", "Suministros de oficina", "Herramientas", "Material mínimo" }));
 
+        jButton7.setText("Cargar");
+
         javax.swing.GroupLayout Pan3Layout = new javax.swing.GroupLayout(Pan3);
         Pan3.setLayout(Pan3Layout);
         Pan3Layout.setHorizontalGroup(
@@ -436,15 +439,19 @@ int x,y;
             .addGroup(Pan3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane7)
+            .addComponent(jScrollPane7, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
         );
         Pan3Layout.setVerticalGroup(
             Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan3Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
+                .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7))
+                .addGap(41, 41, 41)
                 .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -748,9 +755,14 @@ int x,y;
 
         lblDescr.setText("Nombre ");
 
-        lblCategorias.setText("Categoria");
+        lblCategorias.setText("Categoría");
 
         jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Acueducto", "Materiales", "Limpieza", "Suministros de oficina", "Herramientas" }));
+        jComboBoxCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxCategoriaActionPerformed(evt);
+            }
+        });
 
         jButton13.setText("Cargar");
         jButton13.addActionListener(new java.awt.event.ActionListener() {
@@ -767,7 +779,7 @@ int x,y;
                 {null, null, null, null, null}
             },
             new String [] {
-                "Código ", "Nombre", "Categoría  ", "Cantidad Minina", "Tipo de Unidad"
+                "Código ", "Nombre", "Categoría  ", "Cantidad Mínima", "Tipo de Unidad"
             }
         ));
         jScrollPane10.setViewportView(tablaNuevoMaterial);
@@ -800,15 +812,15 @@ int x,y;
 
         jLabel1.setText("Cantidad Mínima");
 
-        jTxtCantidadMinima.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTxtCantidadMinimaActionPerformed(evt);
-            }
-        });
-
         jLabel20.setText("Tipo de unidad");
 
         jComboBoxTipo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bolsa", "Caja", "Cubeta", "Galón", "1/4 Galón", "Laminas", "Litros", "Kit", "Kilo", "Paquete", "Pares", "Unidad" }));
+
+        try {
+            jTxtCantidadMinima.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
 
         javax.swing.GroupLayout Pan11Layout = new javax.swing.GroupLayout(Pan11);
         Pan11.setLayout(Pan11Layout);
@@ -826,7 +838,7 @@ int x,y;
                         .addGap(49, 49, 49)
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtxtDescrip)
-                            .addComponent(jComboBoxCategoria, 0, 180, Short.MAX_VALUE)
+                            .addComponent(jComboBoxCategoria, 0, 283, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Pan11Layout.createSequentialGroup()
                                 .addComponent(jtxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -834,11 +846,14 @@ int x,y;
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel20)
                             .addComponent(jLabel1))
-                        .addGap(22, 22, 22)
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTxtCantidadMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(233, 233, 233))
+                            .addGroup(Pan11Layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(jComboBoxTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Pan11Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jTxtCantidadMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(114, 114, 114))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan11Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -863,7 +878,7 @@ int x,y;
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
-                            .addComponent(jTxtCantidadMinima, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTxtCantidadMinima, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtxtDescrip, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3463,10 +3478,6 @@ int x,y;
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtCodigoActionPerformed
 
-    private void jTxtCantidadMinimaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtCantidadMinimaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTxtCantidadMinimaActionPerformed
-
     private void jtxtDes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtDes1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtDes1ActionPerformed
@@ -3558,12 +3569,19 @@ int x,y;
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
 
+        
+       
         tablaNuevoMaterial.setValueAt(jtxtCodigo.getText(),0,0);
         tablaNuevoMaterial.setValueAt(jtxtDescrip.getText(),0,1);
         tablaNuevoMaterial.setValueAt(jComboBoxCategoria.getSelectedItem(),0,2);
         tablaNuevoMaterial.setValueAt(jTxtCantidadMinima.getText(),0,3);
         tablaNuevoMaterial.setValueAt(jComboBoxTipo.getSelectedItem(),0,4);
+    
     }//GEN-LAST:event_jButton13ActionPerformed
+
+    private void jComboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxCategoriaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -3660,6 +3678,7 @@ int x,y;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JComboBox jComboBox1;
@@ -3795,7 +3814,7 @@ int x,y;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JTextField jTxtCantidadMinima;
+    private javax.swing.JFormattedTextField jTxtCantidadMinima;
     private javax.swing.JFormattedTextField jtxtApe;
     private javax.swing.JFormattedTextField jtxtApe01;
     private javax.swing.JFormattedTextField jtxtApel;
