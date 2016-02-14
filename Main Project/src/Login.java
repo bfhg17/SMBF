@@ -2,8 +2,10 @@
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 
@@ -24,7 +26,7 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
-           
+           con.connect();
 setLocationRelativeTo(null);
    
     }
@@ -168,41 +170,52 @@ setLocationRelativeTo(null);
 
     
     
-    private boolean validarLogin() throws SQLException{
-    //uncomplete
-        try{
+    private boolean validarLogin() throws SQLException{//yolo
+    
+            
             String username = jtxtNomU.getText();
             System.out.println(username);
-            String pass = jtxtContra.getText();
+            String pass =  String.valueOf(jtxtContra.getPassword());
             System.out.println(pass);
+              String user1="";
+              String pass1="";
+        try{
             
-            String sql = "SELECT nickname_login,contraseña FROM usuario ";
-            PreparedStatement us = con.connect().prepareStatement(sql);
+            String sql = "SELECT nickname_login,contraseña FROM usuario WHERE nickname_login = '"+username+"' and contraseña = '"+pass+"'";
             System.out.println(sql);
+            PreparedStatement us = con.connect().prepareStatement(sql);           
             ResultSet res = us.executeQuery();
-            System.out.println(res.getString("nickname_login") + "\t" +res.getString("contraseña"));
             
-          
-       
-     
-            if ( res.getString("nickname_login").equals(username) && res.getString("contraseña").equals(pass) ) 
-                { 
-                    System.out.println("USUARIO O PASS CORRECTOS");
-                    return true;
-                } 
-                else 
-                { 
-                    System.out.println("USUARIO Y PASS INCORRECTOS");
-                    return false;
-                   
-                }
-          
-           
+           while (res.next()) {
+                user1 = res.getString("nickname_login");
+                pass1 = res.getString("contraseña");
+           System.out.println(res.getString("nickname_login"));
+           System.out.println(res.getString("contraseña"));
+            }
+            if (username.equals(user1) && pass.equals(pass1)) {
+            JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
+            return false;
+            }
+            else{
+            JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
+
+            }
+            res.close();    
         }catch(SQLException E){
-        System.out.println("NOT FOUND");
-          return false;//cambiar para
+        System.out.println("rekt");
+        
+           String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
+            System.out.println(sql);
+            PreparedStatement ps = con.connect().prepareStatement(sql);           
+           ResultSet rs = ps.executeQuery();
+           if(rs.next()) {
+           String nom = rs.getString(1);
+           String ap = rs.getString(2);
+           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores"); 
+           }
+        return true;//cambiar     
     }
-       
+     return false;  
     }
     
     
