@@ -1,4 +1,11 @@
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -11,7 +18,7 @@
  * @author Bradley
  */
 public class Login extends javax.swing.JFrame {
-
+ DB.JavaConnection con = new DB.JavaConnection();
     /**
      * Creates new form Login
      */
@@ -40,7 +47,7 @@ setLocationRelativeTo(null);
         btnEntrar = new javax.swing.JButton();
         lblSanJoaquin = new javax.swing.JLabel();
         lbl20 = new javax.swing.JLabel();
-        jtxtNomU = new javax.swing.JFormattedTextField();
+        jtxtNomU = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Bodega Municipalidad de Flores");
@@ -75,12 +82,11 @@ setLocationRelativeTo(null);
         lbl20.setFont(new java.awt.Font("Tahoma", 3, 11)); // NOI18N
         lbl20.setText("2016");
 
-        try {
-            jtxtNomU.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("AAAAAAAA")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtxtNomU.setToolTipText("8 caracteres AlfaNumericos");
+        jtxtNomU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtNomUActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panLoginLayout = new javax.swing.GroupLayout(panLogin);
         panLogin.setLayout(panLoginLayout);
@@ -160,13 +166,64 @@ setLocationRelativeTo(null);
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    private boolean validarLogin() throws SQLException{
+    //uncomplete
+        try{
+            String username = jtxtNomU.getText();
+            System.out.println(username);
+            String pass = jtxtContra.getText();
+            System.out.println(pass);
+            
+            String sql = "SELECT nickname_login,contraseña FROM usuario ";
+            PreparedStatement us = con.connect().prepareStatement(sql);
+            System.out.println(sql);
+            ResultSet res = us.executeQuery();
+            System.out.println(res.getString("nickname_login") + "\t" +res.getString("contraseña"));
+            
+          
+       
+     
+            if ( res.getString("nickname_login").equals(username) && res.getString("contraseña").equals(pass) ) 
+                { 
+                    System.out.println("USUARIO O PASS CORRECTOS");
+                    return true;
+                } 
+                else 
+                { 
+                    System.out.println("USUARIO Y PASS INCORRECTOS");
+                    return false;
+                   
+                }
+          
+           
+        }catch(SQLException E){
+        System.out.println("NOT FOUND");
+          return false;//cambiar para
+    }
+       
+    }
+    
+    
+    
+    
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-        // TODO add your handling code here:
-          new Principal().setVisible(true);
-        this.setVisible(false);
-        
-        
+     try {
+         if( validarLogin() == true){
+             new Principal().setVisible(true);
+             this.setVisible(false);
+             
+         }
+     } catch (SQLException ex) {
+         Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+         System.out.println("CANT LOGIN,WRONG USER OR PASS");
+     }
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void jtxtNomUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNomUActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtNomUActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,7 +266,7 @@ setLocationRelativeTo(null);
     private javax.swing.JButton btnEntrar;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPasswordField jtxtContra;
-    private javax.swing.JFormattedTextField jtxtNomU;
+    private javax.swing.JTextField jtxtNomU;
     private javax.swing.JLabel lbl20;
     private javax.swing.JLabel lblContraseñas;
     private javax.swing.JLabel lblNombreU;
