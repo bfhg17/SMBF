@@ -31,17 +31,18 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form NewJFrame
      */
     DefaultTableModel modeloTablaNuevoMaterial;
+    DefaultTableModel modeloTablaBusquedaEspecifica;
     DB.JavaConnection con = new DB.JavaConnection();
     
     public Principal() {
         this.dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnasInventario());
-    
+        modeloTablaBusquedaEspecifica = new DefaultTableModel(null,getColumnasInventario());
         setUndecorated(false);
         initComponents();
        
         setFilasInventario();//Inicializacion de los dos metodos para las tablas
-       setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
        this.getContentPane().setBackground(Color.white);
     }
 
@@ -151,9 +152,9 @@ public class Principal extends javax.swing.JFrame {
     
     //METODOS PARA REGISTRAR
     
-    void BuscarCod(JTextField h){
+    void BuscarCod(JTextField h,JTextField g){
      try{
-            String sql = "SELECT nombre FROM material WHERE id_material="+ jtxtCodigos.getText();
+            String sql = "SELECT nombre FROM material WHERE id_material="+ g.getText();
             PreparedStatement us = con.connect().prepareStatement(sql);
             ResultSet res = us.executeQuery();
             
@@ -167,6 +168,31 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
+    
+    void setFilasBuscarEspecifico(String c){
+    
+    try{  
+       
+            String sql = "SELECT id_material,nombre,categoria,tipoUnidad,cantidadMinima,cantidadStock,ubicacion,fecha FROM material WHERE estado = 1 and id_material = '"+c+"'";
+            PreparedStatement us = con.connect().prepareStatement(sql);
+            System.out.println(sql);
+            ResultSet res = us.executeQuery();
+            
+            Object datos[]=new Object[8];     
+                while(res.next()){
+                    for(int i = 0; i < 8 ; i++){
+                        datos[i] = res.getObject(i + 1);
+                    }
+                    modeloTablaBusquedaEspecifica.addRow(datos);
+                }
+            res.close();
+    
+        }   catch(SQLException e){
+        System.out.println("Error Mysql");
+        }
+    
+    
+    }
     
     void Registrar(){//b
     try{
@@ -208,10 +234,10 @@ public class Principal extends javax.swing.JFrame {
         lblCodigos = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jScrollPane8 = new javax.swing.JScrollPane();
-        jTable8 = new javax.swing.JTable();
+        tablaBusquedaEspecifica = new javax.swing.JTable();
         lblD = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
-        jtxtCo = new javax.swing.JFormattedTextField();
+        jtxtCodigos2 = new javax.swing.JFormattedTextField();
         jtxtDescription1 = new javax.swing.JFormattedTextField();
         jPanel12 = new javax.swing.JPanel();
         jTabbedPane6 = new javax.swing.JTabbedPane();
@@ -627,18 +653,8 @@ public class Principal extends javax.swing.JFrame {
 
         lblCodigos.setText("Código  ");
 
-        jTable8.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Código", "Tipo De Unidad", "Descripción", "Cantidad", "Ubicación"
-            }
-        ));
-        jScrollPane8.setViewportView(jTable8);
+        tablaBusquedaEspecifica.setModel(modeloTablaBusquedaEspecifica);
+        jScrollPane8.setViewportView(tablaBusquedaEspecifica);
 
         lblD.setText("Nombre");
 
@@ -650,11 +666,11 @@ public class Principal extends javax.swing.JFrame {
         });
 
         try {
-            jtxtCo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("AAAAAA")));
+            jtxtCodigos2.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("AAAAAA")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jtxtCo.setToolTipText("6 Caracteres Alfanumericos");
+        jtxtCodigos2.setToolTipText("6 Caracteres Alfanumericos");
 
         jtxtDescription1.setEditable(false);
         try {
@@ -682,7 +698,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(Pan9Layout.createSequentialGroup()
-                        .addComponent(jtxtCo, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtxtCodigos2, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jtxtDescription1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -700,7 +716,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan9Layout.createSequentialGroup()
                         .addGroup(Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton9)
-                            .addComponent(jtxtCo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtxtCodigos2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblD)
@@ -3326,10 +3342,12 @@ public class Principal extends javax.swing.JFrame {
                                         .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(jLabel5)
                                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(lblDepartamento)
-                                        .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(18, 18, 18)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPan19Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(lblDepartamento)
+                                            .addComponent(jComboBox15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPan19Layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -3348,7 +3366,7 @@ public class Principal extends javax.swing.JFrame {
                                         .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(lblDescription)
                                             .addComponent(jtxtDescripti, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 71, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                                         .addGroup(jPan19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                             .addComponent(btnEnviar)
                                             .addComponent(btnCarga))
@@ -3814,7 +3832,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jtxtCodigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCodigosActionPerformed
 
-         BuscarCod(jtxtDescription);  // TODO add your handling code here:
+         BuscarCod(jtxtDescription,jtxtCodigos);  // TODO add your handling code here:
     }//GEN-LAST:event_jtxtCodigosActionPerformed
 
     private void jtxtDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtDescriptionActionPerformed
@@ -3826,8 +3844,10 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtDescription1ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-
-    BuscarCod(jtxtDescription1);
+        limpiarTabla(tablaBusquedaEspecifica);
+        String cod = jtxtCodigos2.getText();
+        setFilasBuscarEspecifico(cod);
+    BuscarCod(jtxtDescription1,jtxtCodigos2);
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
  
@@ -4045,7 +4065,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
-    private javax.swing.JTable jTable8;
     private javax.swing.JTable jTable9;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
@@ -4074,10 +4093,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jtxtCedJ;
     private javax.swing.JFormattedTextField jtxtCedJ01;
     private javax.swing.JFormattedTextField jtxtCedula;
-    private javax.swing.JFormattedTextField jtxtCo;
     private javax.swing.JFormattedTextField jtxtCode;
     private javax.swing.JFormattedTextField jtxtCodigo;
     private javax.swing.JFormattedTextField jtxtCodigos;
+    private javax.swing.JFormattedTextField jtxtCodigos2;
     private javax.swing.JTextField jtxtCon;
     private javax.swing.JTextField jtxtCont;
     private javax.swing.JTextField jtxtCont01;
@@ -4223,6 +4242,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel lblUsers;
     private javax.swing.JLabel lblUsers1;
     private javax.swing.JLabel lblname;
+    private javax.swing.JTable tablaBusquedaEspecifica;
     private javax.swing.JTable tablaNuevoMaterial;
     // End of variables declaration//GEN-END:variables
 }
