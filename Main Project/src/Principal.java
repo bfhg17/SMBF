@@ -6,6 +6,8 @@ import java.awt.Point;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
 import java.util.logging.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -19,6 +21,7 @@ import java.util.logging.*;
  */
 public class Principal extends javax.swing.JFrame {
     int x,y; 
+    
     /**
      * Creates new form NewJFrame
      */
@@ -26,32 +29,36 @@ public class Principal extends javax.swing.JFrame {
     DB.JavaConnection con = new DB.JavaConnection();
     
     public Principal() {
-        modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnas());
-        setFilas();//Inicializacion de los dos metodos para las tablas
+        modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnasInventario());
+    
         setUndecorated(false);
         initComponents();
+       
+        setFilasInventario();//Inicializacion de los dos metodos para las tablas
        setLocationRelativeTo(null);
        this.getContentPane().setBackground(Color.white);
     }
 
     
-    private String[] getColumnas(){
+    private String[] getColumnasInventario(){
     
-    String columna[] = new String[]{"ID","Nombre","Categoria","Tipo de Unidad","Cantidad Mínima"};
+    String columna[] = new String[]{"ID","Nombre","Categoría","Tipo de Unidad","Cantidad Mínima","Cantidad en Stock","Ubicación","Última Fecha de Registro"};
     return columna;
     }
     
-    private void setFilas(){
+    private void setFilasInventario(){
     
-        try{
-            String sql = "SELECT id_material,nombre,categoria,tipoUnidad,cantidadMinima FROM material";
+        try{  
+       
+      
+            String sql = "SELECT id_material,nombre,categoria,tipoUnidad,cantidadMinima,cantidadStock,ubicacion,fecha FROM material WHERE estado = 1";
             PreparedStatement us = con.connect().prepareStatement(sql);
+            System.out.println(sql);
             ResultSet res = us.executeQuery();
             
-            Object datos[]=new Object[5];
-            
+            Object datos[]=new Object[8];     
                 while(res.next()){
-                    for(int i = 0; i < 5 ; i++){
+                    for(int i = 0; i < 8 ; i++){
                         datos[i] = res.getObject(i + 1);
                     }
                     modeloTablaNuevoMaterial.addRow(datos);
@@ -63,6 +70,35 @@ public class Principal extends javax.swing.JFrame {
      
         }
     }
+    
+     private void setFilasInventarioSelected(String c){
+    
+         if("General".equals(c)){
+         setFilasInventario();
+         }else{
+        try{  
+       
+            String sql = "SELECT id_material,nombre,categoria,tipoUnidad,cantidadMinima,cantidadStock,ubicacion,fecha FROM material WHERE estado = 1 and categoria = '"+c+"'";
+            PreparedStatement us = con.connect().prepareStatement(sql);
+            System.out.println(sql);
+            ResultSet res = us.executeQuery();
+            
+            Object datos[]=new Object[8];     
+                while(res.next()){
+                    for(int i = 0; i < 8 ; i++){
+                        datos[i] = res.getObject(i + 1);
+                    }
+                    modeloTablaNuevoMaterial.addRow(datos);
+                }
+            res.close();
+    
+        }   catch(SQLException e){
+        System.out.println("Error Mysql");
+     
+        }
+        }
+    }
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -77,7 +113,7 @@ public class Principal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         TadP3 = new javax.swing.JTabbedPane();
         Pan3 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox();
+        jComboBoxInventario = new javax.swing.JComboBox();
         jButton7 = new javax.swing.JButton();
         jScrollPane10 = new javax.swing.JScrollPane();
         tablaNuevoMaterial = new javax.swing.JTable();
@@ -448,10 +484,20 @@ public class Principal extends javax.swing.JFrame {
 
         TadP3.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "General", "Acueducto", "Materiales", "Limpieza", "Suministros de oficina", "Herramientas", "Material mínimo" }));
+        jComboBoxInventario.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jComboBoxInventario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "General", "Materiales", "Acueducto", "Limpieza", "Suministros de oficina", "Herramientas", "Material mínimo" }));
+        jComboBoxInventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxInventarioActionPerformed(evt);
+            }
+        });
 
         jButton7.setText("Cargar");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
 
         tablaNuevoMaterial.setModel(modeloTablaNuevoMaterial);
         jScrollPane10.setViewportView(tablaNuevoMaterial);
@@ -462,7 +508,7 @@ public class Principal extends javax.swing.JFrame {
             Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(Pan3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jComboBoxInventario, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(39, 39, 39)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(400, Short.MAX_VALUE))
@@ -477,7 +523,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(Pan3Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jComboBoxInventario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7))
                 .addContainerGap(378, Short.MAX_VALUE))
             .addGroup(Pan3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,7 +533,7 @@ public class Principal extends javax.swing.JFrame {
                     .addContainerGap()))
         );
 
-        jComboBox1.getAccessibleContext().setAccessibleName("");
+        jComboBoxInventario.getAccessibleContext().setAccessibleName("");
 
         TadP3.addTab("Inventario General", Pan3);
 
@@ -949,13 +995,13 @@ public class Principal extends javax.swing.JFrame {
 
         jTable9.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Código", "Tipo de Unidad", "Descripción", "Cantidad", "Ubicación"
+                "Código", "Tipo de Unidad", "Nombre", "Cantidad Minima", "Ubicación", "Categoria", "Cantidad en Stock"
             }
         ));
         jScrollPane9.setViewportView(jTable9);
@@ -986,36 +1032,41 @@ public class Principal extends javax.swing.JFrame {
         Pan10.setLayout(Pan10Layout);
         Pan10Layout.setHorizontalGroup(
             Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane9, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
             .addGroup(Pan10Layout.createSequentialGroup()
                 .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Pan10Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(Pan10Layout.createSequentialGroup()
-                                .addComponent(lblCodes, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(152, 152, 152)
-                                .addComponent(lblDe)
-                                .addGap(18, 18, 18)
-                                .addComponent(jtxtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(lblCanti)
-                            .addGroup(Pan10Layout.createSequentialGroup()
-                                .addGap(108, 108, 108)
+                                .addContainerGap()
                                 .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jtxtCodigos, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(Pan10Layout.createSequentialGroup()
-                                        .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(47, 47, 47)
-                                        .addComponent(lblUbicaciones)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addComponent(lblCodes, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(152, 152, 152)
+                                        .addComponent(lblDe)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jtxtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(lblCanti)
+                                    .addGroup(Pan10Layout.createSequentialGroup()
+                                        .addGap(108, 108, 108)
+                                        .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jtxtCodigos, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(Pan10Layout.createSequentialGroup()
+                                                .addComponent(jSpinner3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(47, 47, 47)
+                                                .addComponent(lblUbicaciones)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                             .addGroup(Pan10Layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(286, 286, 286)
+                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(Pan10Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 241, Short.MAX_VALUE))
                     .addGroup(Pan10Layout.createSequentialGroup()
-                        .addGap(286, 286, 286)
-                        .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap()
+                        .addComponent(jScrollPane9)))
+                .addContainerGap())
         );
         Pan10Layout.setVerticalGroup(
             Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3618,6 +3669,33 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTipoActionPerformed
 
+    private void jComboBoxInventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxInventarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxInventarioActionPerformed
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+
+        Object item = jComboBoxInventario.getSelectedItem();
+        String categ = String.valueOf(item);
+        System.out.println(categ);
+        limpiarTabla(tablaNuevoMaterial);
+        setFilasInventarioSelected(categ);
+       
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton7ActionPerformed
+ 
+    
+    public void limpiarTabla(JTable tabla){
+        try {
+            DefaultTableModel modelo=(DefaultTableModel) tabla.getModel();
+            int filas=tabla.getRowCount();
+            for (int i = 0;filas>i; i++) {
+                modelo.removeRow(0);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al limpiar la tabla.");
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -3716,7 +3794,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox10;
     private javax.swing.JComboBox jComboBox11;
     private javax.swing.JComboBox jComboBox12;
@@ -3729,6 +3806,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JComboBox jComboBox7;
     private javax.swing.JComboBox jComboBox8;
     private javax.swing.JComboBox jComboBoxCategoria;
+    private javax.swing.JComboBox jComboBoxInventario;
     private javax.swing.JComboBox jComboBoxTipo;
     private javax.swing.JFormattedTextField jFormattedTextField31;
     private javax.swing.JFormattedTextField jFormattedTextField69;
