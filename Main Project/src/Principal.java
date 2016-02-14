@@ -5,9 +5,13 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.logging.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -21,7 +25,8 @@ import javax.swing.JTable;
  */
 public class Principal extends javax.swing.JFrame {
     int x,y; 
-    
+    DateFormat dateFormat;
+    Calendar cal = Calendar.getInstance();
     /**
      * Creates new form NewJFrame
      */
@@ -29,6 +34,7 @@ public class Principal extends javax.swing.JFrame {
     DB.JavaConnection con = new DB.JavaConnection();
     
     public Principal() {
+        this.dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnasInventario());
     
         setUndecorated(false);
@@ -145,14 +151,14 @@ public class Principal extends javax.swing.JFrame {
     
     //METODOS PARA REGISTRAR
     
-    void BuscarCod(){
+    void BuscarCod(JTextField h){
      try{
             String sql = "SELECT nombre FROM material WHERE id_material="+ jtxtCodigos.getText();
             PreparedStatement us = con.connect().prepareStatement(sql);
             ResultSet res = us.executeQuery();
             
            if(res.next()){
-           jtxtDescription.setText(res.getString("nombre"));
+           h.setText(res.getString("nombre"));
            }
     
         }   catch(SQLException e){
@@ -167,7 +173,8 @@ public class Principal extends javax.swing.JFrame {
         String hj = jtxtCodigos.getText();
         String ub = jComboBoxUbicacionRegistro.getSelectedItem().toString();
         String sp =  jSpinnerCantidad.getValue().toString();
-        String sql=" UPDATE material SET `ubicacion` = '"+ ub +"',`cantidadStock` = '"+ sp +"',`estado` = 1  WHERE `material`.`id_material` = '"+hj+"'";
+        String sql=" UPDATE material SET `ubicacion` = '"+ ub +"',`cantidadStock` = '"+ sp +"',`fecha` = '"+ cal.getTime() +"',`estado` = 1  WHERE `material`.`id_material` = '"+hj+"'";
+        System.out.println(cal.getTime());
         PreparedStatement us = con.connect().prepareStatement(sql);
        
             int n = us.executeUpdate();
@@ -204,8 +211,8 @@ public class Principal extends javax.swing.JFrame {
         jTable8 = new javax.swing.JTable();
         lblD = new javax.swing.JLabel();
         jButton9 = new javax.swing.JButton();
-        jtxtDescr = new javax.swing.JFormattedTextField();
         jtxtCo = new javax.swing.JFormattedTextField();
+        jtxtDescription1 = new javax.swing.JFormattedTextField();
         jPanel12 = new javax.swing.JPanel();
         jTabbedPane6 = new javax.swing.JTabbedPane();
         Pan18 = new javax.swing.JPanel();
@@ -251,7 +258,6 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane9 = new javax.swing.JScrollPane();
         jTable9 = new javax.swing.JTable();
         jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
         jtxtCodigos = new javax.swing.JFormattedTextField();
         jtxtDescription = new javax.swing.JFormattedTextField();
         jSpinnerCantidad = new javax.swing.JSpinner();
@@ -637,13 +643,11 @@ public class Principal extends javax.swing.JFrame {
         lblD.setText("Nombre");
 
         jButton9.setText("Buscar");
-
-        try {
-            jtxtDescr.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("*************************")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtxtDescr.setToolTipText("25 caracteres maximo");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         try {
             jtxtCo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("AAAAAA")));
@@ -651,6 +655,19 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jtxtCo.setToolTipText("6 Caracteres Alfanumericos");
+
+        jtxtDescription1.setEditable(false);
+        try {
+            jtxtDescription1.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("***********************")));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+        jtxtDescription1.setToolTipText("25 caracteres maximo");
+        jtxtDescription1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtDescription1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Pan9Layout = new javax.swing.GroupLayout(Pan9);
         Pan9.setLayout(Pan9Layout);
@@ -666,11 +683,11 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(Pan9Layout.createSequentialGroup()
                         .addComponent(jtxtCo, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(24, 24, 24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jtxtDescr))
+                    .addComponent(jtxtDescription1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane8)
+            .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 734, Short.MAX_VALUE)
         );
         Pan9Layout.setVerticalGroup(
             Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -687,12 +704,12 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(Pan9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblD)
-                    .addComponent(jtxtDescr, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtDescription1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(180, Short.MAX_VALUE))
         );
 
         TadP3.addTab("Búsqueda   Específica", Pan9);
@@ -1086,14 +1103,17 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jButton12.setText("Registrar");
-
         try {
             jtxtCodigos.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("AAAAAA")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
         jtxtCodigos.setToolTipText("6 Caracteres Alfanumericos");
+        jtxtCodigos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtCodigosActionPerformed(evt);
+            }
+        });
 
         jtxtDescription.setEditable(false);
         try {
@@ -1102,6 +1122,11 @@ public class Principal extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         jtxtDescription.setToolTipText("25 caracteres maximo");
+        jtxtDescription.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtDescriptionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout Pan10Layout = new javax.swing.GroupLayout(Pan10);
         Pan10.setLayout(Pan10Layout);
@@ -1110,38 +1135,34 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(Pan10Layout.createSequentialGroup()
                 .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(Pan10Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(Pan10Layout.createSequentialGroup()
-                                .addContainerGap()
+                                .addComponent(lblCodes, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(152, 152, 152)
+                                .addComponent(lblDe)
+                                .addGap(18, 18, 18)
+                                .addComponent(jtxtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblCanti)
+                            .addGroup(Pan10Layout.createSequentialGroup()
+                                .addGap(108, 108, 108)
                                 .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtxtCodigos, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(Pan10Layout.createSequentialGroup()
-                                        .addComponent(lblCodes, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(152, 152, 152)
-                                        .addComponent(lblDe)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jtxtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(lblCanti)
-                                    .addGroup(Pan10Layout.createSequentialGroup()
-                                        .addGap(108, 108, 108)
-                                        .addGroup(Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jtxtCodigos, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGroup(Pan10Layout.createSequentialGroup()
-                                                .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(47, 47, 47)
-                                                .addComponent(lblUbicaciones)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addComponent(jComboBoxUbicacionRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                            .addGroup(Pan10Layout.createSequentialGroup()
-                                .addGap(286, 286, 286)
-                                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(Pan10Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jSpinnerCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(47, 47, 47)
+                                        .addComponent(lblUbicaciones)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jComboBoxUbicacionRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                         .addGap(0, 241, Short.MAX_VALUE))
                     .addGroup(Pan10Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane9)))
                 .addContainerGap())
+            .addGroup(Pan10Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         Pan10Layout.setVerticalGroup(
             Pan10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1162,9 +1183,7 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37)
                 .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(jButton12, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         jComboBoxUbicacionRegistro.getAccessibleContext().setAccessibleName("");
@@ -2805,17 +2824,13 @@ public class Principal extends javax.swing.JFrame {
                 .addGroup(Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblContraseña)
                     .addComponent(jtxtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Pan13Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtxtRepetir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblRepetir)))
-                    .addGroup(Pan13Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btnCrearUsuario)
-                            .addComponent(btnDeshacer))))
+                    .addGroup(Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jtxtRepetir, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblRepetir))
+                    .addComponent(btnCrearUsuario)
+                    .addComponent(btnDeshacer))
                 .addGap(31, 31, 31)
                 .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(55, Short.MAX_VALUE))
@@ -3791,10 +3806,30 @@ public class Principal extends javax.swing.JFrame {
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
 
- BuscarCod();     
  Registrar();
+ limpiarTabla(tablaNuevoMaterial);
+ setFilasInventario();
 // TODO add your handling code here:
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jtxtCodigosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCodigosActionPerformed
+
+         BuscarCod(jtxtDescription);  // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtCodigosActionPerformed
+
+    private void jtxtDescriptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtDescriptionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtDescriptionActionPerformed
+
+    private void jtxtDescription1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtDescription1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtDescription1ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+
+    BuscarCod(jtxtDescription1);
+// TODO add your handling code here:
+    }//GEN-LAST:event_jButton9ActionPerformed
  
     
     
@@ -3883,7 +3918,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton2;
@@ -4054,10 +4088,10 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jtxtDes;
     private javax.swing.JFormattedTextField jtxtDes1;
     private javax.swing.JFormattedTextField jtxtDesc;
-    private javax.swing.JFormattedTextField jtxtDescr;
     private javax.swing.JFormattedTextField jtxtDescrip;
     private javax.swing.JFormattedTextField jtxtDescripti;
     private javax.swing.JFormattedTextField jtxtDescription;
+    private javax.swing.JFormattedTextField jtxtDescription1;
     private javax.swing.JFormattedTextField jtxtDir;
     private javax.swing.JFormattedTextField jtxtDirec;
     private javax.swing.JTextField jtxtEstado;

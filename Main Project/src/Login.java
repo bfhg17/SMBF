@@ -203,7 +203,7 @@ setLocationRelativeTo(null);
         }catch(SQLException E){
         System.out.println("rekt");
         
-           String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
+            String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
             System.out.println(sql);
             PreparedStatement ps = con.connect().prepareStatement(sql);           
            ResultSet rs = ps.executeQuery();
@@ -216,9 +216,6 @@ setLocationRelativeTo(null);
     }
      return false;  
     }
-    
-    
-    
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
      try {

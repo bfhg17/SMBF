@@ -356,14 +356,14 @@
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <Component id="jtxtCo" min="-2" pref="57" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
                                       <Component id="jButton9" min="-2" pref="110" max="-2" attributes="0"/>
                                   </Group>
-                                  <Component id="jtxtDescr" max="32767" attributes="0"/>
+                                  <Component id="jtxtDescription1" min="-2" pref="203" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jScrollPane8" alignment="0" max="32767" attributes="0"/>
+                          <Component id="jScrollPane8" alignment="0" pref="734" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                     <DimensionLayout dim="1">
@@ -385,13 +385,13 @@
                               </Group>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="lblD" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jtxtDescr" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jtxtDescription1" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel16" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="jScrollPane8" min="-2" pref="164" max="-2" attributes="0"/>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="180" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -467,14 +467,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Buscar"/>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JFormattedTextField" name="jtxtDescr">
-                      <Properties>
-                        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-                          <Format format="*************************" subtype="-1" type="5"/>
-                        </Property>
-                        <Property name="toolTipText" type="java.lang.String" value="25 caracteres maximo"/>
-                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton9ActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="jtxtCo">
                       <Properties>
@@ -483,6 +478,18 @@
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="6 Caracteres Alfanumericos"/>
                       </Properties>
+                    </Component>
+                    <Component class="javax.swing.JFormattedTextField" name="jtxtDescription1">
+                      <Properties>
+                        <Property name="editable" type="boolean" value="false"/>
+                        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
+                          <Format format="***********************" subtype="-1" type="5"/>
+                        </Property>
+                        <Property name="toolTipText" type="java.lang.String" value="25 caracteres maximo"/>
+                      </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtDescription1ActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1155,40 +1162,28 @@
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
-                                              <EmptySpace max="-2" attributes="0"/>
+                                              <Component id="lblCodes" min="-2" pref="63" max="-2" attributes="0"/>
+                                              <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
+                                              <Component id="lblDe" min="-2" max="-2" attributes="0"/>
+                                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                                              <Component id="jtxtDescription" min="-2" pref="203" max="-2" attributes="0"/>
+                                          </Group>
+                                          <Component id="lblCanti" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          <Group type="102" alignment="0" attributes="0">
+                                              <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" attributes="0">
-                                                  <Group type="102" attributes="0">
-                                                      <Component id="lblCodes" min="-2" pref="63" max="-2" attributes="0"/>
-                                                      <EmptySpace min="-2" pref="152" max="-2" attributes="0"/>
-                                                      <Component id="lblDe" min="-2" max="-2" attributes="0"/>
-                                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                      <Component id="jtxtDescription" min="-2" pref="203" max="-2" attributes="0"/>
-                                                  </Group>
-                                                  <Component id="lblCanti" alignment="0" min="-2" max="-2" attributes="0"/>
+                                                  <Component id="jtxtCodigos" min="-2" pref="63" max="-2" attributes="0"/>
                                                   <Group type="102" alignment="0" attributes="0">
-                                                      <EmptySpace min="-2" pref="108" max="-2" attributes="0"/>
-                                                      <Group type="103" groupAlignment="0" attributes="0">
-                                                          <Component id="jtxtCodigos" min="-2" pref="63" max="-2" attributes="0"/>
-                                                          <Group type="102" alignment="0" attributes="0">
-                                                              <Component id="jSpinnerCantidad" min="-2" pref="61" max="-2" attributes="0"/>
-                                                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
-                                                              <Component id="lblUbicaciones" min="-2" max="-2" attributes="0"/>
-                                                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                              <Component id="jComboBoxUbicacionRegistro" min="-2" pref="61" max="-2" attributes="0"/>
-                                                          </Group>
-                                                      </Group>
+                                                      <Component id="jSpinnerCantidad" min="-2" pref="61" max="-2" attributes="0"/>
+                                                      <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                                                      <Component id="lblUbicaciones" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="jComboBoxUbicacionRegistro" min="-2" pref="61" max="-2" attributes="0"/>
                                                   </Group>
                                               </Group>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace min="-2" pref="286" max="-2" attributes="0"/>
-                                              <Component id="jButton12" min="-2" pref="150" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jButton11" min="-2" pref="191" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="0" pref="241" max="32767" attributes="0"/>
@@ -1199,6 +1194,11 @@
                                   </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+                              <Component id="jButton11" min="-2" pref="191" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1223,9 +1223,7 @@
                               <Component id="jButton11" min="-2" pref="34" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
                               <Component id="jScrollPane9" min="-2" pref="123" max="-2" attributes="0"/>
-                              <EmptySpace pref="58" max="32767" attributes="0"/>
-                              <Component id="jButton12" min="-2" pref="33" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="47" max="-2" attributes="0"/>
+                              <EmptySpace pref="138" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1344,11 +1342,6 @@
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton11ActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButton12">
-                      <Properties>
-                        <Property name="text" type="java.lang.String" value="Registrar"/>
-                      </Properties>
-                    </Component>
                     <Component class="javax.swing.JFormattedTextField" name="jtxtCodigos">
                       <Properties>
                         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
@@ -1356,6 +1349,9 @@
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="6 Caracteres Alfanumericos"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtCodigosActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="jtxtDescription">
                       <Properties>
@@ -1365,6 +1361,9 @@
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="25 caracteres maximo"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtDescriptionActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JSpinner" name="jSpinnerCantidad">
                     </Component>
@@ -4188,21 +4187,14 @@
                                   <Component id="lblContraseña" alignment="0" min="-2" max="-2" attributes="0"/>
                                   <Component id="jtxtContraseña" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="jtxtRepetir" alignment="3" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lblRepetir" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                      <Component id="jtxtRepetir" alignment="3" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblRepetir" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="3" attributes="0">
-                                          <Component id="btnCrearUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="btnDeshacer" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                  </Group>
+                                  <Component id="btnCrearUsuario" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnDeshacer" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                               <Component id="jScrollPane15" min="-2" pref="150" max="-2" attributes="0"/>
