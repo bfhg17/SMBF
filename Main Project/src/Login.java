@@ -171,8 +171,7 @@ setLocationRelativeTo(null);
     
     
     private boolean validarLogin() throws SQLException{//yolo
-    
-            
+  
             String username = jtxtNomU.getText();
             System.out.println(username);
             String pass =  String.valueOf(jtxtContra.getPassword());
