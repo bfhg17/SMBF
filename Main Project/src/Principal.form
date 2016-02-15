@@ -2615,13 +2615,13 @@
                                               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="jtxtNombre01" min="-2" pref="87" max="-2" attributes="0"/>
-                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                                      <Component id="jLabela15" min="-2" max="-2" attributes="0"/>
+                                                      <Component id="jtxtNombre01" min="-2" pref="93" max="-2" attributes="0"/>
                                                       <EmptySpace max="-2" attributes="0"/>
-                                                      <Component id="jtxtApe01" min="-2" pref="87" max="-2" attributes="0"/>
+                                                      <Component id="jLabela15" min="-2" max="-2" attributes="0"/>
+                                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                                      <Component id="jtxtApe01" max="32767" attributes="0"/>
                                                   </Group>
-                                                  <Component id="jtxtCedJ01" max="32767" attributes="0"/>
+                                                  <Component id="jtxtCedJ01" pref="225" max="32767" attributes="0"/>
                                                   <Component id="jtxtTele01" alignment="0" max="32767" attributes="0"/>
                                                   <Component id="jTxtEmpresa01" max="32767" attributes="0"/>
                                               </Group>
@@ -2646,11 +2646,6 @@
                                               <EmptySpace min="-2" pref="305" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                  </Group>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButton6" min="-2" pref="238" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="256" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2688,11 +2683,11 @@
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                                               <Group type="103" groupAlignment="3" attributes="0">
-                                                                  <Component id="jtxtNombre01" alignment="3" min="-2" max="-2" attributes="0"/>
                                                                   <Component id="jLabela15" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="jtxtNombre01" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="jtxtApe01" alignment="3" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                           </Group>
-                                                          <Component id="jtxtApe01" alignment="1" min="-2" max="-2" attributes="0"/>
                                                           <Component id="lblDirection01" min="-2" max="-2" attributes="0"/>
                                                       </Group>
                                                   </Group>
@@ -2707,10 +2702,8 @@
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
-                                      <Component id="jScrollPane24" min="-2" pref="75" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="jButton6" min="-2" pref="28" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="598" max="-2" attributes="0"/>
+                                      <Component id="jScrollPane24" min="-2" pref="221" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="498" max="-2" attributes="0"/>
                                       <Component id="jToggleButton1" min="-2" pref="28" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -2773,26 +2766,6 @@
                                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtCedJ01ActionPerformed"/>
                               </Events>
                             </Component>
-                            <Component class="javax.swing.JFormattedTextField" name="jtxtNombre01">
-                              <Properties>
-                                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-                                  <Format format="ULLLLLLLLLLLLL" subtype="-1" type="5"/>
-                                </Property>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtNombre01ActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JFormattedTextField" name="jtxtApe01">
-                              <Properties>
-                                <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-                                  <Format format="ULLLLLLLLLLL" subtype="-1" type="5"/>
-                                </Property>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtApe01ActionPerformed"/>
-                              </Events>
-                            </Component>
                             <Component class="javax.swing.JLabel" name="jLabela15">
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Apellido"/>
@@ -2823,48 +2796,10 @@
                                 <Component class="javax.swing.JTable" name="jTable20">
                                   <Properties>
                                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                      <Table columnCount="6" rowCount="4">
-                                        <Column editable="true" title="C.Proveedor " type="java.lang.Object"/>
-                                        <Column editable="false" title="Empresa" type="java.lang.Object"/>
-                                        <Column editable="true" title="Ced.Jur&#xed;dica" type="java.lang.Object"/>
-                                        <Column editable="true" title="N.contacto" type="java.lang.Object"/>
-                                        <Column editable="true" title="Ape.Contacto" type="java.lang.Object"/>
-                                        <Column editable="true" title="Tel&#xe9;fono" type="java.lang.Object"/>
-                                      </Table>
+                                      <Table columnCount="0" rowCount="4"/>
                                     </Property>
                                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                                      <TableColumnModel selectionModel="0">
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                          <Title/>
-                                          <Editor/>
-                                          <Renderer/>
-                                        </Column>
-                                      </TableColumnModel>
+                                      <TableColumnModel selectionModel="0"/>
                                     </Property>
                                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
@@ -2893,13 +2828,9 @@
                                 <Property name="text" type="java.lang.String" value="Registrar"/>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JButton" name="jButton6">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="Registrar"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton6ActionPerformed"/>
-                              </Events>
+                            <Component class="javax.swing.JTextField" name="jtxtNombre01">
+                            </Component>
+                            <Component class="javax.swing.JTextField" name="jtxtApe01">
                             </Component>
                           </SubComponents>
                         </Container>

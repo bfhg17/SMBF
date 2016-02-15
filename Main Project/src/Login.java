@@ -192,7 +192,7 @@ setLocationRelativeTo(null);
                     }
                     if (username.equals(user1) && pass.equals(pass1)) {
                         JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
-                        return false;
+                        return true;
                     }
                     else{
                         JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);

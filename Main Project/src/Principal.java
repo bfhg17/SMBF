@@ -1,6 +1,7 @@
 
 import DB.JavaConnection;
 import java.awt.Color;
+import java.awt.HeadlessException;
 import java.awt.MouseInfo;
 import java.awt.Point;
 import javax.swing.table.DefaultTableModel;
@@ -132,7 +133,7 @@ public class Principal extends javax.swing.JFrame {
     
     void LlenarNuevoMaterial(){
     try{
-     String sql = "insert into material(id_material,nombre,categoria,tipoUnidad,cantidadMinima)" + "values (?,?,?,?,?)";
+     String sql = "INSERT INTO material(id_material,nombre,categoria,tipoUnidad,cantidadMinima)" + "values (?,?,?,?,?)";
             PreparedStatement us = con.connect().prepareStatement(sql);
             
             us.setString(1, jtxtCodigo.getText());
@@ -151,27 +152,46 @@ public class Principal extends javax.swing.JFrame {
     }
     
     //metodo para ingresar proveedores
-    void LlenarNuevoProveedor(){
-    try{
-     String sql = "insert into proveedor(empresa,ced_juridica,nombre_contacto,apel_contacto,telefono,direccion,codigo_proveedor)" + "values (?,?,?,?,?,?,?)";
-            PreparedStatement us = con.connect().prepareStatement(sql);
-            
-            us.setString(1, jTxtEmpresa01.getText());
-            us.setString(2, jtxtCedJ01.getText());
-            us.setString(3, jtxtNombre01.getText());
-            us.setString(4, jtxtApe01.getText());
-            us.setString(5, jtxtTele01.getText());
-            int codigoProve= Integer.parseInt(NProveedor01.getText());
-            us.setInt(6, codigoProve);
-            us.setString(7, jTextAreaDir.getText());            
-            int n = us.executeUpdate();
-            if(n>0){
-                JOptionPane.showMessageDialog(null, "Datos Guardados");
+    
+    void MostrarProveedor(String valor){
+    DefaultTableModel proveedor= new DefaultTableModel();
+    proveedor.addColumn("C. Proveedor");
+    proveedor.addColumn("Empresa");
+    proveedor.addColumn("Ced.Jurídica");
+    proveedor.addColumn("Nom. Contacto");
+    proveedor.addColumn("Apel. Contacto");
+    proveedor.addColumn("Teléfono");
+    jTable20.setModel(proveedor);
+    
+    String sql="";
+    sql="SELECT * FROM proveedores";
+    /*if(valor.equals(""))
+    {
+    sql="SELECT * FROM proveedor";
+    }
+    else{
+    sql="SELECT * FROM proveedores WHERE codigo_proveedor='"+valor+"'";
+    }*/
+ 
+    String []datos = new String [6];
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                datos[0]=rs.getString(7);
+                
+                datos[1]=rs.getString(1);
+                datos[2]=rs.getString(2);
+                datos[3]=rs.getString(3);
+                datos[4]=rs.getString(4);
+                datos[5]=rs.getString(5);
+                proveedor.addRow(datos);
             }
-    }  catch(SQLException e){
-        System.out.println("Error Mysql");
-     
+            jTable20.setModel(proveedor);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
+    
     }
     
     void LimpiarNuevoProveedor(){
@@ -439,8 +459,6 @@ public class Principal extends javax.swing.JFrame {
         jtxtTele01 = new javax.swing.JFormattedTextField();
         jTxtEmpresa01 = new javax.swing.JTextField();
         jtxtCedJ01 = new javax.swing.JFormattedTextField();
-        jtxtNombre01 = new javax.swing.JFormattedTextField();
-        jtxtApe01 = new javax.swing.JFormattedTextField();
         jLabela15 = new javax.swing.JLabel();
         jScrollPane23 = new javax.swing.JScrollPane();
         jTextAreaDir = new javax.swing.JTextArea();
@@ -450,7 +468,8 @@ public class Principal extends javax.swing.JFrame {
         NProveedor01 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
-        jButton6 = new javax.swing.JButton();
+        jtxtNombre01 = new javax.swing.JTextField();
+        jtxtApe01 = new javax.swing.JTextField();
         jPanel8 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -2021,28 +2040,6 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        try {
-            jtxtNombre01.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("ULLLLLLLLLLLLL")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtxtNombre01.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtNombre01ActionPerformed(evt);
-            }
-        });
-
-        try {
-            jtxtApe01.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("ULLLLLLLLLLL")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtxtApe01.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtApe01ActionPerformed(evt);
-            }
-        });
-
         jLabela15.setText("Apellido");
 
         jTextAreaDir.setColumns(20);
@@ -2051,23 +2048,15 @@ public class Principal extends javax.swing.JFrame {
 
         jTable20.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "C.Proveedor ", "Empresa", "Ced.Jurídica", "N.contacto", "Ape.Contacto", "Teléfono"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                true, false, true, true, true, true
-            };
 
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
             }
-        });
+        ));
         jScrollPane24.setViewportView(jTable20);
 
         jLabela10.setText("Código de proveedor");
@@ -2080,13 +2069,6 @@ public class Principal extends javax.swing.JFrame {
         });
 
         jToggleButton1.setText("Registrar");
-
-        jButton6.setText("Registrar");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -2107,12 +2089,12 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel7Layout.createSequentialGroup()
-                                .addComponent(jtxtNombre01, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabela15)
+                                .addComponent(jtxtNombre01, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtxtApe01, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jtxtCedJ01)
+                                .addComponent(jLabela15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jtxtApe01))
+                            .addComponent(jtxtCedJ01, javax.swing.GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
                             .addComponent(jtxtTele01)
                             .addComponent(jTxtEmpresa01))
                         .addGap(45, 45, 45)
@@ -2130,10 +2112,6 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(305, 305, 305))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(256, 256, 256))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2164,9 +2142,9 @@ public class Principal extends javax.swing.JFrame {
                                     .addGroup(jPanel7Layout.createSequentialGroup()
                                         .addGap(3, 3, 3)
                                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                            .addComponent(jLabela15)
                                             .addComponent(jtxtNombre01, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabela15)))
-                                    .addComponent(jtxtApe01, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jtxtApe01, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addComponent(lblDirection01))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -2175,10 +2153,8 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(14, 14, 14)
-                .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(598, 598, 598)
+                .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(498, 498, 498)
                 .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -3812,21 +3788,9 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    private void jtxtNombre01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNombre01ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtNombre01ActionPerformed
-
-    private void jtxtApe01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtApe01ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtApe01ActionPerformed
-
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
@@ -3923,8 +3887,31 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTxtEmpresa01ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    LlenarNuevoProveedor();
-    LimpiarNuevoProveedor();
+         int codigoProve= Integer.parseInt(NProveedor01.getText());
+    try{
+           PreparedStatement us = cn.prepareStatement("INSERT INTO proveedores(empresa,ced_juridica,nombre_contacto,apel_contacto,telefono,direccion,codigo_proveedor) VALUES (?,?,?,?,?,?,?)");
+          
+ 
+            
+            us.setString(1, jTxtEmpresa01.getText());
+            us.setString(2, jtxtCedJ01.getText());
+            us.setString(3, jtxtNombre01.getText());
+            us.setString(4, jtxtApe01.getText());
+            us.setString(5, jtxtTele01.getText());
+            
+            us.setString(6, jTextAreaDir.getText());  
+            us.setInt(7, codigoProve);
+            us.executeUpdate();
+            MostrarProveedor("");
+
+            JOptionPane.showMessageDialog(null, "Datos Guardados");
+            
+    }  catch(SQLException | HeadlessException e){
+        System.out.println(e.getMessage());
+        JOptionPane.showMessageDialog(null, "Datos Ingresados Incorrectamente");
+        }
+    
+    //LimpiarNuevoProveedor();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jtxtCedJ01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedJ01ActionPerformed
@@ -4026,7 +4013,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -4163,7 +4149,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JTextField jTxtEmpresa01;
     private javax.swing.JFormattedTextField jtxtApe;
-    private javax.swing.JFormattedTextField jtxtApe01;
+    private javax.swing.JTextField jtxtApe01;
     private javax.swing.JFormattedTextField jtxtApel;
     private javax.swing.JFormattedTextField jtxtApel1;
     private javax.swing.JFormattedTextField jtxtApellido;
@@ -4201,7 +4187,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jtxtNom1;
     private javax.swing.JFormattedTextField jtxtNomb;
     private javax.swing.JFormattedTextField jtxtNombre;
-    private javax.swing.JFormattedTextField jtxtNombre01;
+    private javax.swing.JTextField jtxtNombre01;
     private javax.swing.JFormattedTextField jtxtNumSoli;
     private javax.swing.JFormattedTextField jtxtNumSolicitud;
     private javax.swing.JFormattedTextField jtxtNumeroOrden;
@@ -4322,4 +4308,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tablaBusquedaEspecifica;
     private javax.swing.JTable tablaNuevoMaterial;
     // End of variables declaration//GEN-END:variables
+    JavaConnection cc= new JavaConnection(); //probando
+    Connection cn= cc.connect();
 }
