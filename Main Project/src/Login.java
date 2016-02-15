@@ -170,11 +170,11 @@ setLocationRelativeTo(null);
 
     
     
-    private boolean validarLogin() throws SQLException{//yolo
+    private boolean validarLogin(String username, String pass) throws SQLException{//yolo
   
-            String username = jtxtNomU.getText();
+        /*String username = jtxtNomU.getText();*/
             System.out.println(username);
-            String pass =  String.valueOf(jtxtContra.getPassword());
+            /*String pass =  String.valueOf(jtxtContra.getPassword());*/
             System.out.println(pass);
               String user1="";
               String pass1="";
@@ -183,34 +183,33 @@ setLocationRelativeTo(null);
             String sql = "SELECT nickname_login,contraseña FROM usuario WHERE nickname_login = '"+username+"' and contraseña = '"+pass+"'";
             System.out.println(sql);
             PreparedStatement us = con.connect().prepareStatement(sql);           
-            ResultSet res = us.executeQuery();
-            
-           while (res.next()) {
-                user1 = res.getString("nickname_login");
-                pass1 = res.getString("contraseña");
-           System.out.println(res.getString("nickname_login"));
-           System.out.println(res.getString("contraseña"));
-            }
-            if (username.equals(user1) && pass.equals(pass1)) {
-            JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
-            return false;
-            }
-            else{
-            JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
-
-            }
-            res.close();    
+                try (ResultSet res = us.executeQuery()) {
+                    while (res.next()) {
+                        user1 = res.getString("nickname_login");
+                        pass1 = res.getString("contraseña");
+                        System.out.println(res.getString("nickname_login"));
+                        System.out.println(res.getString("contraseña"));
+                    }
+                    if (username.equals(user1) && pass.equals(pass1)) {
+                        JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
+                        return false;
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
+                        
+                    }   }    
         }catch(SQLException E){
         System.out.println("rekt");
         
             String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
             System.out.println(sql);
-            PreparedStatement ps = con.connect().prepareStatement(sql);           
+           PreparedStatement ps = con.connect().prepareStatement(sql);           
            ResultSet rs = ps.executeQuery();
            if(rs.next()) {
            String nom = rs.getString(1);
            String ap = rs.getString(2);
-           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores"); 
+           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores");
+            
            }
         return true;//cambiar     
     }
@@ -218,8 +217,10 @@ setLocationRelativeTo(null);
     }
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-     try {
-         if( validarLogin() == true){
+     String username = jtxtNomU.getText();
+     String pass =  String.valueOf(jtxtContra.getPassword());   
+        try {
+         if( validarLogin(username,pass) == true){
              new Principal().setVisible(true);
              this.setVisible(false);
              

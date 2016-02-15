@@ -156,7 +156,7 @@
         </Property>
         <Property name="tabPlacement" type="int" value="2"/>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Default Cursor"/>
+          <Color id="Cursor Por defecto"/>
         </Property>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Times New Roman" size="18" style="0"/>
@@ -377,7 +377,7 @@
                                       <Component id="jScrollPane11" min="-2" pref="239" max="-2" attributes="0"/>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                       <Component id="jButton18" min="-2" pref="33" max="-2" attributes="0"/>
-                                      <EmptySpace pref="162" max="32767" attributes="0"/>
+                                      <EmptySpace pref="422" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -473,6 +473,9 @@
                                   <Format format="********" subtype="-1" type="5"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtOredesNActionPerformed"/>
+                              </Events>
                             </Component>
                           </SubComponents>
                         </Container>
@@ -557,7 +560,7 @@
                                       <Component id="jScrollPane12" min="-2" pref="132" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
                                       <Component id="btnDescontar" min="-2" pref="33" max="-2" attributes="0"/>
-                                      <EmptySpace pref="189" max="32767" attributes="0"/>
+                                      <EmptySpace pref="449" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -967,9 +970,9 @@
                     <DimensionLayout dim="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
                                       <Group type="103" groupAlignment="0" attributes="0">
                                           <Group type="102" attributes="0">
                                               <Component id="lblCodes" min="-2" pref="63" max="-2" attributes="0"/>
@@ -995,10 +998,7 @@
                                       </Group>
                                       <EmptySpace min="0" pref="430" max="32767" attributes="0"/>
                                   </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jScrollPane9" max="32767" attributes="0"/>
-                                  </Group>
+                                  <Component id="jScrollPane9" alignment="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                           </Group>
@@ -1187,7 +1187,7 @@
                               </Group>
                               <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
                               <Component id="jScrollPane8" min="-2" pref="164" max="-2" attributes="0"/>
-                              <EmptySpace pref="237" max="32767" attributes="0"/>
+                              <EmptySpace pref="497" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1245,6 +1245,9 @@
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="6 Caracteres Alfanumericos"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtCodigos2ActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JFormattedTextField" name="jtxtDescription1">
                       <Properties>
@@ -1307,15 +1310,20 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="lblOrdenes" max="32767" attributes="0"/>
-                  <Component id="TaP2" max="32767" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="TaP2" max="32767" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="lblOrdenes" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="TaP2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1418,11 +1426,11 @@
                                       <Component id="lblPro" min="-2" pref="67" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <EmptySpace pref="326" max="32767" attributes="0"/>
+                              <EmptySpace pref="306" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jScrollPane2" min="-2" pref="734" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="189" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="169" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -1570,6 +1578,9 @@
                       <Properties>
                         <Property name="text" type="java.lang.String" value="Guardar"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGuardarActionPerformed"/>
+                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="btnConsultar">
                       <Properties>
@@ -1701,6 +1712,9 @@
                         </Property>
                         <Property name="toolTipText" type="java.lang.String" value="6 caracteres alfanumericos"/>
                       </Properties>
+                      <Events>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtNumeroOrdenActionPerformed"/>
+                      </Events>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -1758,7 +1772,7 @@
                                                       <Component id="jtxtName" min="-2" pref="87" max="-2" attributes="0"/>
                                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                       <Component id="lblApellidos" min="-2" max="-2" attributes="0"/>
-                                                      <EmptySpace pref="184" max="32767" attributes="0"/>
+                                                      <EmptySpace pref="164" max="32767" attributes="0"/>
                                                       <Component id="jtxtLast" min="-2" pref="87" max="-2" attributes="0"/>
                                                   </Group>
                                                   <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
@@ -2545,7 +2559,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="jTabbedPane1" min="-2" pref="741" max="-2" attributes="0"/>
-                              <EmptySpace min="0" pref="182" max="32767" attributes="0"/>
+                              <EmptySpace min="0" pref="162" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2601,7 +2615,7 @@
                                               <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                                   <Group type="102" alignment="0" attributes="0">
-                                                      <Component id="jtxtNomb01" min="-2" pref="87" max="-2" attributes="0"/>
+                                                      <Component id="jtxtNombre01" min="-2" pref="87" max="-2" attributes="0"/>
                                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                                       <Component id="jLabela15" min="-2" max="-2" attributes="0"/>
                                                       <EmptySpace max="-2" attributes="0"/>
@@ -2609,7 +2623,7 @@
                                                   </Group>
                                                   <Component id="jtxtCedJ01" max="32767" attributes="0"/>
                                                   <Component id="jtxtTele01" alignment="0" max="32767" attributes="0"/>
-                                                  <Component id="jtxtCont01" max="32767" attributes="0"/>
+                                                  <Component id="jTxtEmpresa01" max="32767" attributes="0"/>
                                               </Group>
                                               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
                                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -2626,12 +2640,6 @@
                                               </Group>
                                               <EmptySpace pref="24" max="32767" attributes="0"/>
                                           </Group>
-                                          <Group type="102" alignment="0" attributes="0">
-                                              <Component id="lblDirection2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                                              <Component id="jScrollPane25" min="-2" pref="590" max="-2" attributes="0"/>
-                                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                          </Group>
                                           <Group type="102" alignment="1" attributes="0">
                                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                               <Component id="jToggleButton1" min="-2" pref="110" max="-2" attributes="0"/>
@@ -2641,8 +2649,8 @@
                                   </Group>
                                   <Group type="102" alignment="1" attributes="0">
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="jButton6" min="-2" pref="110" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="329" max="-2" attributes="0"/>
+                                      <Component id="jButton6" min="-2" pref="238" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="256" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                             </DimensionLayout>
@@ -2659,7 +2667,7 @@
                                                   <Component id="jLabela10" alignment="3" min="-2" max="-2" attributes="0"/>
                                                   <Component id="NProveedor01" alignment="3" min="-2" max="-2" attributes="0"/>
                                               </Group>
-                                              <Component id="jtxtCont01" min="-2" max="-2" attributes="0"/>
+                                              <Component id="jTxtEmpresa01" min="-2" max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -2680,7 +2688,7 @@
                                                           <Group type="102" alignment="0" attributes="0">
                                                               <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
                                                               <Group type="103" groupAlignment="3" attributes="0">
-                                                                  <Component id="jtxtNomb01" alignment="3" min="-2" max="-2" attributes="0"/>
+                                                                  <Component id="jtxtNombre01" alignment="3" min="-2" max="-2" attributes="0"/>
                                                                   <Component id="jLabela15" alignment="3" min="-2" max="-2" attributes="0"/>
                                                               </Group>
                                                           </Group>
@@ -2700,20 +2708,9 @@
                                       </Group>
                                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                                       <Component id="jScrollPane24" min="-2" pref="75" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Group type="102" attributes="0">
-                                              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                                              <Component id="lblDirection2" min="-2" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="609" max="-2" attributes="0"/>
-                                          </Group>
-                                          <Group type="102" alignment="1" attributes="0">
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jScrollPane25" min="-2" pref="57" max="-2" attributes="0"/>
-                                              <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="jButton6" min="-2" pref="28" max="-2" attributes="0"/>
-                                              <EmptySpace min="-2" pref="547" max="-2" attributes="0"/>
-                                          </Group>
-                                      </Group>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jButton6" min="-2" pref="28" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="598" max="-2" attributes="0"/>
                                       <Component id="jToggleButton1" min="-2" pref="28" max="-2" attributes="0"/>
                                       <EmptySpace max="-2" attributes="0"/>
                                   </Group>
@@ -2761,7 +2758,10 @@
                                 </Property>
                               </Properties>
                             </Component>
-                            <Component class="javax.swing.JTextField" name="jtxtCont01">
+                            <Component class="javax.swing.JTextField" name="jTxtEmpresa01">
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTxtEmpresa01ActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JFormattedTextField" name="jtxtCedJ01">
                               <Properties>
@@ -2769,15 +2769,18 @@
                                   <Format format="3-AAA-AAAAAA" subtype="-1" type="5"/>
                                 </Property>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtCedJ01ActionPerformed"/>
+                              </Events>
                             </Component>
-                            <Component class="javax.swing.JFormattedTextField" name="jtxtNomb01">
+                            <Component class="javax.swing.JFormattedTextField" name="jtxtNombre01">
                               <Properties>
                                 <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
                                   <Format format="ULLLLLLLLLLLLL" subtype="-1" type="5"/>
                                 </Property>
                               </Properties>
                               <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtNomb01ActionPerformed"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jtxtNombre01ActionPerformed"/>
                               </Events>
                             </Component>
                             <Component class="javax.swing.JFormattedTextField" name="jtxtApe01">
@@ -2802,7 +2805,7 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JTextArea" name="jTextArea4">
+                                <Component class="javax.swing.JTextArea" name="jTextAreaDir">
                                   <Properties>
                                     <Property name="columns" type="int" value="20"/>
                                     <Property name="rows" type="int" value="5"/>
@@ -2877,30 +2880,13 @@
                             </Component>
                             <Component class="javax.swing.JTextField" name="NProveedor01">
                             </Component>
-                            <Container class="javax.swing.JScrollPane" name="jScrollPane25">
-                              <AuxValues>
-                                <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                              </AuxValues>
-
-                              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                              <SubComponents>
-                                <Component class="javax.swing.JTextArea" name="jTextArea5">
-                                  <Properties>
-                                    <Property name="columns" type="int" value="20"/>
-                                    <Property name="rows" type="int" value="5"/>
-                                  </Properties>
-                                </Component>
-                              </SubComponents>
-                            </Container>
-                            <Component class="javax.swing.JLabel" name="lblDirection2">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="Direcci&#xf3;n"/>
-                              </Properties>
-                            </Component>
                             <Component class="javax.swing.JButton" name="jButton3">
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Cargar"/>
                               </Properties>
+                              <Events>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
+                              </Events>
                             </Component>
                             <Component class="javax.swing.JToggleButton" name="jToggleButton1">
                               <Properties>
@@ -3328,7 +3314,7 @@
                       <Component id="lblAdministracion" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
                       <Component id="TadP4" min="-2" pref="460" max="-2" attributes="0"/>
-                      <EmptySpace pref="137" max="32767" attributes="0"/>
+                      <EmptySpace pref="397" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>

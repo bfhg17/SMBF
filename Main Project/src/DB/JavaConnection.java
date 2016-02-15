@@ -22,7 +22,6 @@ public class JavaConnection {
                 System.out.print("MYSQL ERROR");
                 }
                 catch(ClassNotFoundException e){
-                e.printStackTrace();
                 }
                 catch(Exception e){
                 System.out.println("Se ha presentado el siguiente error"+e.getMessage());
