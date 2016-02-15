@@ -35,6 +35,8 @@ public class Principal extends javax.swing.JFrame {
     DefaultTableModel modeloTablaBusquedaEspecifica;
     DefaultTableModel modeloTablaRegistrar;
     DB.JavaConnection con = new DB.JavaConnection();
+    //JavaConnection con= new JavaConnection(); //probando
+    Connection cn= con.connect();
     
     public Principal() {
         this.dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -153,7 +155,7 @@ public class Principal extends javax.swing.JFrame {
     
     //metodo para ingresar proveedores
     
-    void MostrarProveedor(String valor){
+    void MostrarProveedor(){
     DefaultTableModel proveedor= new DefaultTableModel();
     proveedor.addColumn("C. Proveedor");
     proveedor.addColumn("Empresa");
@@ -164,15 +166,8 @@ public class Principal extends javax.swing.JFrame {
     jTable20.setModel(proveedor);
     
     String sql="";
-    sql="SELECT * FROM proveedores";
-    /*if(valor.equals(""))
-    {
     sql="SELECT * FROM proveedor";
-    }
-    else{
-    sql="SELECT * FROM proveedores WHERE codigo_proveedor='"+valor+"'";
-    }*/
- 
+    
     String []datos = new String [6];
         try {
             Statement st = cn.createStatement();
@@ -186,6 +181,47 @@ public class Principal extends javax.swing.JFrame {
                 datos[4]=rs.getString(4);
                 datos[5]=rs.getString(5);
                 proveedor.addRow(datos);
+            }
+            jTable20.setModel(proveedor);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
+void buscarProveedor(int codProve,String nombreProv ){
+    DefaultTableModel proveedor= new DefaultTableModel();
+    proveedor.addColumn("C. Proveedor");
+    proveedor.addColumn("Empresa");
+    proveedor.addColumn("Ced.Jurídica");
+    proveedor.addColumn("Nom. Contacto");
+    proveedor.addColumn("Apel. Contacto");
+    proveedor.addColumn("Teléfono");
+    
+    jTable21.setModel(proveedor);
+    
+    String sql="";
+    
+
+       if(codProve != 0 && nombreProv.equals("")){
+            sql="SELECT * FROM proveedores WHERE codigo_proveedor='"+codProve+"'";
+    }else{
+           sql="SELECT * FROM proveedores WHERE nombre_contacto='"+nombreProv+"'";
+       }
+    
+    String []datos = new String [7];
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                datos[0]=rs.getString(7);
+                
+                datos[1]=rs.getString(1);
+                datos[2]=rs.getString(2);
+                datos[3]=rs.getString(3);
+                datos[4]=rs.getString(4);
+                datos[5]=rs.getString(5);
+                proveedor.addRow(datos);
+                jtxtDirecProveBuscar.setText(datos[6]=rs.getString(6));
             }
             jTable20.setModel(proveedor);
         } catch (SQLException ex) {
@@ -475,12 +511,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel11 = new javax.swing.JLabel();
         jScrollPane26 = new javax.swing.JScrollPane();
         jTable21 = new javax.swing.JTable();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
+        jBuscaCodProve = new javax.swing.JTextField();
+        jBuscaNomProve = new javax.swing.JTextField();
         jButton4 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane27 = new javax.swing.JScrollPane();
-        jTextArea6 = new javax.swing.JTextArea();
+        jtxtDirecProveBuscar = new javax.swing.JTextArea();
         jPanel9 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -2167,27 +2203,32 @@ public class Principal extends javax.swing.JFrame {
 
         jTable21.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+                {}
             },
             new String [] {
-                "C.Proveedor", "Empresa", "Ced.Jurídica", "N.Contacto", "Ape.Contacto", "Teléfono"
+
             }
         ));
         jScrollPane26.setViewportView(jTable21);
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        jBuscaCodProve.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                jBuscaCodProveActionPerformed(evt);
             }
         });
 
         jButton4.setText("Buscar ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel12.setText("Dirección");
 
-        jTextArea6.setColumns(20);
-        jTextArea6.setRows(5);
-        jScrollPane27.setViewportView(jTextArea6);
+        jtxtDirecProveBuscar.setColumns(20);
+        jtxtDirecProveBuscar.setRows(5);
+        jScrollPane27.setViewportView(jtxtDirecProveBuscar);
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
         jPanel8.setLayout(jPanel8Layout);
@@ -2203,8 +2244,8 @@ public class Principal extends javax.swing.JFrame {
                             .addComponent(jLabel11))
                         .addGap(43, 43, 43)
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
-                            .addComponent(jTextField3))
+                            .addComponent(jBuscaNomProve, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE)
+                            .addComponent(jBuscaCodProve))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2221,11 +2262,11 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jBuscaCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jBuscaNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -3788,9 +3829,9 @@ public class Principal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void jBuscaCodProveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscaCodProveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_jBuscaCodProveActionPerformed
 
     private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
         // TODO add your handling code here:
@@ -3902,7 +3943,7 @@ public class Principal extends javax.swing.JFrame {
             us.setString(6, jTextAreaDir.getText());  
             us.setInt(7, codigoProve);
             us.executeUpdate();
-            MostrarProveedor("");
+            MostrarProveedor();
 
             JOptionPane.showMessageDialog(null, "Datos Guardados");
             
@@ -3917,10 +3958,37 @@ public class Principal extends javax.swing.JFrame {
     private void jtxtCedJ01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedJ01ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtCedJ01ActionPerformed
- 
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    int codProve = 0;
+    String nomProve = "";
+    if(!jBuscaCodProve.getText().equals("")){
+    codProve= Integer.parseInt(jBuscaCodProve.getText());
+    }else{
+        codProve = 0;
+    }
+    if(!jBuscaNomProve.getText().equals("")){
+     nomProve = jBuscaNomProve.getText();
+    }else{
+     nomProve = "";
+    }
     
-    
+     try{  
+     if(codProve != 0 && nomProve.equals("")){
+        buscarProveedor(codProve, "");
+        }else{
+            if(codProve == 0 && !nomProve.equals("")){
+            buscarProveedor(0, nomProve);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nombre no encontrado");
+            }
+        }
+     }
+     catch(Exception e){
+        System.out.println(e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error desconocido"); 
+             }
+    }//GEN-LAST:event_jButton4ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -4003,6 +4071,8 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JButton btnMostrar;
     private javax.swing.JButton btnMuestra;
     private javax.swing.JButton btnMuestras;
+    private javax.swing.JTextField jBuscaCodProve;
+    private javax.swing.JTextField jBuscaNomProve;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -4134,14 +4204,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea6;
     private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jTextArea8;
     private javax.swing.JTextArea jTextAreaDir;
     private javax.swing.JTextField jTextCantMin;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
@@ -4177,6 +4244,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JFormattedTextField jtxtDescription1;
     private javax.swing.JFormattedTextField jtxtDir;
     private javax.swing.JFormattedTextField jtxtDirec;
+    private javax.swing.JTextArea jtxtDirecProveBuscar;
     private javax.swing.JTextField jtxtEstado;
     private javax.swing.JFormattedTextField jtxtId;
     private javax.swing.JFormattedTextField jtxtId1;
@@ -4308,6 +4376,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JTable tablaBusquedaEspecifica;
     private javax.swing.JTable tablaNuevoMaterial;
     // End of variables declaration//GEN-END:variables
-    JavaConnection cc= new JavaConnection(); //probando
-    Connection cn= cc.connect();
+    
+    
 }
