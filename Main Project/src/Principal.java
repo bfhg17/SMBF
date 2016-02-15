@@ -189,15 +189,15 @@ public class Principal extends javax.swing.JFrame {
     
     }
 void buscarProveedor(int codProve,String nombreProv ){
-    DefaultTableModel proveedor= new DefaultTableModel();
-    proveedor.addColumn("C. Proveedor");
-    proveedor.addColumn("Empresa");
-    proveedor.addColumn("Ced.Jurídica");
-    proveedor.addColumn("Nom. Contacto");
-    proveedor.addColumn("Apel. Contacto");
-    proveedor.addColumn("Teléfono");
+    DefaultTableModel buscaProveedor= new DefaultTableModel();
+    buscaProveedor.addColumn("C. Proveedor");
+    buscaProveedor.addColumn("Empresa");
+    buscaProveedor.addColumn("Ced.Jurídica");
+    buscaProveedor.addColumn("Nom. Contacto");
+    buscaProveedor.addColumn("Apel. Contacto");
+    buscaProveedor.addColumn("Teléfono");
     
-    jTable21.setModel(proveedor);
+    jTable21.setModel(buscaProveedor);
     
     String sql="";
     
@@ -220,16 +220,64 @@ void buscarProveedor(int codProve,String nombreProv ){
                 datos[3]=rs.getString(3);
                 datos[4]=rs.getString(4);
                 datos[5]=rs.getString(5);
-                proveedor.addRow(datos);
+                buscaProveedor.addRow(datos);
                 jtxtDirecProveBuscar.setText(datos[6]=rs.getString(6));
             }
-            jTable20.setModel(proveedor);
+            jTable20.setModel(buscaProveedor);
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     
     }
     
+void modificaProveedor(int codModProve,String nombreModProv ){
+    
+    DefaultTableModel modifProveedor= new DefaultTableModel();
+    modifProveedor.addColumn("C. Proveedor");
+    modifProveedor.addColumn("Empresa");
+    modifProveedor.addColumn("Ced.Jurídica");
+    modifProveedor.addColumn("Nom. Contacto");
+    modifProveedor.addColumn("Apel. Contacto");
+    modifProveedor.addColumn("Teléfono");
+    
+    jTablaModifProve.setModel(modifProveedor);
+    
+    String sql="";
+    
+
+       if(codModProve != 0 && nombreModProv.equals("")){
+            sql="SELECT * FROM proveedores WHERE codigo_proveedor='"+codModProve+"'";
+    }else{
+           sql="SELECT * FROM proveedores WHERE nombre_contacto='"+nombreModProv+"'";
+       }
+    
+    String []datos = new String [7];
+        try {
+            Statement st = cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                datos[0]=rs.getString(7);
+                
+                datos[1]=rs.getString(1);
+                datos[2]=rs.getString(2);
+                datos[3]=rs.getString(3);
+                datos[4]=rs.getString(4);
+                datos[5]=rs.getString(5);
+                modifProveedor.addRow(datos);
+                jModifCodigo.setText(datos[0]=rs.getString(7));
+                jModifNom.setText(datos[3]=rs.getString(3));
+                jModifApel.setText(datos[4]=rs.getString(4));
+                jModifEmpresa.setText(datos[1]=rs.getString(1));
+                jModifCedJur.setText(datos[2]=rs.getString(2));
+                jModifTel.setText(datos[5]=rs.getString(5));
+                jDirecProveModif.setText(datos[6]=rs.getString(6));
+            }
+            jTablaModifProve.setModel(modifProveedor);
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }
     void LimpiarNuevoProveedor(){
         jTxtEmpresa01.setText("");
         jtxtCedJ01.setText("");
@@ -238,6 +286,9 @@ void buscarProveedor(int codProve,String nombreProv ){
         jtxtTele01.setText("");
         NProveedor01.setText("");
         jTextAreaDir.setText("");
+    }
+    void actualizarProveedor(){
+
     }
     //METODOS PARA REGISTRAR
     
@@ -520,15 +571,27 @@ void buscarProveedor(int codProve,String nombreProv ){
         jPanel9 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jButton5 = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        jBotonBuscaMod = new javax.swing.JButton();
+        jModifCodProve = new javax.swing.JTextField();
+        jModifNomProve = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jScrollPane28 = new javax.swing.JScrollPane();
-        jTextArea7 = new javax.swing.JTextArea();
+        jDirecProveModif = new javax.swing.JTextArea();
         jScrollPane29 = new javax.swing.JScrollPane();
-        jTable22 = new javax.swing.JTable();
+        jTablaModifProve = new javax.swing.JTable();
         jButton8 = new javax.swing.JButton();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        jLabel25 = new javax.swing.JLabel();
+        jModifCodigo = new javax.swing.JTextField();
+        jModifNom = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        jModifApel = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        jModifEmpresa = new javax.swing.JTextField();
+        jModifCedJur = new javax.swing.JTextField();
+        jModifTel = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         lblAdministracion = new java.awt.Label();
         TadP4 = new javax.swing.JTabbedPane();
@@ -2143,7 +2206,7 @@ void buscarProveedor(int codProve,String nombreProv ){
                                 .addComponent(jLabela10)
                                 .addGap(18, 18, 18)
                                 .addComponent(NProveedor01)))
-                        .addContainerGap(24, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2277,7 +2340,7 @@ void buscarProveedor(int codProve,String nombreProv ){
                         .addGap(26, 26, 26)
                         .addComponent(jLabel12))
                     .addComponent(jScrollPane27, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(129, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Consultar", jPanel8);
@@ -2286,88 +2349,167 @@ void buscarProveedor(int codProve,String nombreProv ){
 
         jLabel15.setText("Nombre de Proveedor");
 
-        jButton5.setText("Buscar");
-
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        jBotonBuscaMod.setText("Buscar");
+        jBotonBuscaMod.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                jBotonBuscaModActionPerformed(evt);
+            }
+        });
+
+        jModifNomProve.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifNomProveActionPerformed(evt);
             }
         });
 
         jLabel17.setText("Dirección");
 
-        jTextArea7.setColumns(20);
-        jTextArea7.setRows(5);
-        jScrollPane28.setViewportView(jTextArea7);
+        jDirecProveModif.setColumns(20);
+        jDirecProveModif.setRows(5);
+        jScrollPane28.setViewportView(jDirecProveModif);
 
-        jTable22.setModel(new javax.swing.table.DefaultTableModel(
+        jTablaModifProve.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null}
+                {}
             },
             new String [] {
-                "C.Proveedor", "Empresa", "ced.Jurídica", "N.Contacto", "Ape.Contacto", "Teléfono"
+
             }
         ));
-        jScrollPane29.setViewportView(jTable22);
+        jScrollPane29.setViewportView(jTablaModifProve);
 
         jButton8.setText("Modificar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("Nevo Codigo de Proveedor");
+
+        jLabel23.setText("Empresa");
+
+        jLabel24.setText("Cedula Jurídica");
+
+        jLabel25.setText("Nombre del Contacto");
+
+        jModifCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifCodigoActionPerformed(evt);
+            }
+        });
+
+        jModifNom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifNomActionPerformed(evt);
+            }
+        });
+
+        jLabel26.setText("Apellido");
+
+        jLabel27.setText("Teléfono");
 
         javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
         jPanel9.setLayout(jPanel9Layout);
         jPanel9Layout.setHorizontalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane29)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(309, 309, 309))
             .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel15)
-                                    .addComponent(jLabel13))
-                                .addGap(39, 39, 39)
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
                         .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGap(128, 128, 128)
-                                .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel17))))
-                .addContainerGap(82, Short.MAX_VALUE))
+                                .addComponent(jLabel13)
+                                .addGap(43, 43, 43)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
+                        .addGap(60, 60, 60)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel22)
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel23)
+                            .addComponent(jLabel24)
+                            .addComponent(jLabel27))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jModifTel, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jModifCedJur, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jModifNom, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel26))
+                                    .addComponent(jModifEmpresa))
+                                .addGap(18, 18, 18)
+                                .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(307, 307, 307))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel17)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel15)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane29, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel17))
-                    .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22)
+                            .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel25)
+                    .addComponent(jLabel15)
+                    .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jModifNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel26)
+                            .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jModifEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
+                            .addComponent(jModifCedJur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(jModifTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addComponent(jScrollPane29, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(92, 92, 92))
+                .addGap(56, 56, 56))
         );
 
         jTabbedPane1.addTab("Modificar", jPanel9);
@@ -3833,9 +3975,9 @@ void buscarProveedor(int codProve,String nombreProv ){
         // TODO add your handling code here:
     }//GEN-LAST:event_jBuscaCodProveActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void jModifNomProveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifNomProveActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_jModifNomProveActionPerformed
 
     private void jComboBox15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox15ActionPerformed
         // TODO add your handling code here:
@@ -3926,7 +4068,7 @@ void buscarProveedor(int codProve,String nombreProv ){
     private void jTxtEmpresa01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtEmpresa01ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTxtEmpresa01ActionPerformed
-
+//BotonInsertar Proveedor
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
          int codigoProve= Integer.parseInt(NProveedor01.getText());
     try{
@@ -3958,8 +4100,9 @@ void buscarProveedor(int codProve,String nombreProv ){
     private void jtxtCedJ01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedJ01ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtCedJ01ActionPerformed
-
+//Boton Buscar Proveedores
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+   
     int codProve = 0;
     String nomProve = "";
     if(!jBuscaCodProve.getText().equals("")){
@@ -3989,6 +4132,53 @@ void buscarProveedor(int codProve,String nombreProv ){
         JOptionPane.showMessageDialog(null, "Error desconocido"); 
              }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jModifCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jModifCodigoActionPerformed
+
+    private void jModifNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifNomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jModifNomActionPerformed
+
+    private void jBotonBuscaModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscaModActionPerformed
+    //Boton buscar Para modificar Proveedores
+        
+    int codModProve = 0;
+    String nomModProve = "";
+    
+    if(!jModifCodProve.getText().equals("")){
+    codModProve= Integer.parseInt(jModifCodProve.getText());
+    }else{
+        codModProve = 0;
+    }
+    if(!jModifNomProve.getText().equals("")){
+     nomModProve = jModifNomProve.getText();
+    }else{
+     nomModProve = "";
+    }
+    
+     try{  
+     if(codModProve != 0 && nomModProve.equals("")){
+        modificaProveedor(codModProve, "");
+        }else{
+            if(codModProve == 0 && !nomModProve.equals("")){
+            modificaProveedor(0, nomModProve);
+            }else{
+                JOptionPane.showMessageDialog(null, "Nombre no encontrado");
+            }
+        }
+     }
+     catch(Exception e){
+        System.out.println(e.getMessage());
+        JOptionPane.showMessageDialog(null, "Error desconocido"); 
+             }
+    }//GEN-LAST:event_jBotonBuscaModActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+       actualizarProveedor(); //sin implementar
+        
+    }//GEN-LAST:event_jButton8ActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -4071,6 +4261,7 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JButton btnMostrar;
     private javax.swing.JButton btnMuestra;
     private javax.swing.JButton btnMuestras;
+    private javax.swing.JButton jBotonBuscaMod;
     private javax.swing.JTextField jBuscaCodProve;
     private javax.swing.JTextField jBuscaNomProve;
     private javax.swing.JButton jButton1;
@@ -4082,7 +4273,6 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -4100,6 +4290,7 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JComboBox jComboBoxInventario;
     private javax.swing.JComboBox jComboBoxTipo;
     private javax.swing.JComboBox jComboBoxUbicacionRegistro;
+    private javax.swing.JTextArea jDirecProveModif;
     private javax.swing.JFormattedTextField jFormattedTextField31;
     private javax.swing.JFormattedTextField jFormattedTextField69;
     private javax.swing.JLabel jLabel1;
@@ -4116,6 +4307,12 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -4125,6 +4322,14 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel jLabela10;
     private javax.swing.JLabel jLabela15;
+    private javax.swing.JTextField jModifApel;
+    private javax.swing.JTextField jModifCedJur;
+    private javax.swing.JTextField jModifCodProve;
+    private javax.swing.JTextField jModifCodigo;
+    private javax.swing.JTextField jModifEmpresa;
+    private javax.swing.JTextField jModifNom;
+    private javax.swing.JTextField jModifNomProve;
+    private javax.swing.JTextField jModifTel;
     private javax.swing.JPanel jPan19;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
@@ -4181,6 +4386,7 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JTabbedPane jTaPa9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane6;
+    private javax.swing.JTable jTablaModifProve;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable11;
     private javax.swing.JTable jTable12;
@@ -4194,7 +4400,6 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable20;
     private javax.swing.JTable jTable21;
-    private javax.swing.JTable jTable22;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
@@ -4204,13 +4409,10 @@ void buscarProveedor(int codProve,String nombreProv ){
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextArea jTextArea3;
-    private javax.swing.JTextArea jTextArea7;
     private javax.swing.JTextArea jTextArea8;
     private javax.swing.JTextArea jTextAreaDir;
     private javax.swing.JTextField jTextCantMin;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JToggleButton jToggleButton1;
