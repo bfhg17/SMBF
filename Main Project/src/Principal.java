@@ -3939,7 +3939,66 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
-        // TODO add your handling code here:
+       Connection conection;
+        
+        ResultSet resultset;
+
+        try {
+            PreparedStatement st = cn.prepareStatement("INSERT INTO Orden_Compra(numero_orden,codigo_material,descripcion,cant_materiales,precio_unit) VALUES (?,?,?,?,?)");
+            st.setString(1,jtxtOrden.getText());
+            st.setString(2,jtxtCode.getText());
+            st.setString(3,jtxtDesc.getText());
+            st.setString(4,jtxtCantidades.getText());
+            st.setString(5,jtxtPrecio.getText());
+        int res = st.executeUpdate();
+        if(res > 0)
+{
+    JOptionPane.showMessageDialog(null,"Orden cargada");
+
+} else{
+    JOptionPane.showMessageDialog(null,"Error");
+
+}
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }//Connection miConexion=JavaConnection.connect();
+//Statement st = null;
+//ResultSet rs;
+
+//try
+//{
+        //   st=miConexion.createStatement();
+//rs=st.executeQuery("slect * from Orden_Compra where CodProveedor= ´"+codigoprov.getText()+"´");
+//if(rs.next())
+//{
+        // codigo.setText(rs.getString("codigo_proveedor"));
+        //empresa.setText(rs.getString("empresa"));
+        // cedJuridica.setText(rs.getString("cedula_juridica"));
+        //nombre.setText(rs.getString("nombre"));
+        //apellido.setText(rs.getString("apellido"));
+        //telefono.setText(rs.getString("telefono"));
+        //direccion.setText(rs.getString("direccion"));
+        //}
+//else 
+//{
+        //   JOptionPane.showMessageDialog(this,"No existen registros");
+//}
+//}
+//catch(Exception ex)
+//{
+        //   JOptionPane.showMessageDialog(this, ex.getMessage());
+//}
+//finally 
+//{
+        //  try
+        //   {
+        // st.close();
+        // miConexion.close();
+        // }
+        // catch(Exception ex)
+        // {
+        // }
+//}
     }//GEN-LAST:event_btnCargarActionPerformed
 
     private void jtxtLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtLastActionPerformed
