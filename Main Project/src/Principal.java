@@ -154,40 +154,7 @@ public class Principal extends javax.swing.JFrame {
     }
     
     //metodo para ingresar proveedores
-    
-    void MostrarProveedor(){
-    DefaultTableModel proveedor= new DefaultTableModel();
-    proveedor.addColumn("C. Proveedor");
-    proveedor.addColumn("Empresa");
-    proveedor.addColumn("Ced.Jurídica");
-    proveedor.addColumn("Nom. Contacto");
-    proveedor.addColumn("Apel. Contacto");
-    proveedor.addColumn("Teléfono");
-    jTable20.setModel(proveedor);
-    
-    String sql="";
-    sql="SELECT * FROM proveedor";
-    
-    String []datos = new String [6];
-        try {
-            Statement st = cn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
-            while(rs.next()){
-                datos[0]=rs.getString(7);
-                
-                datos[1]=rs.getString(1);
-                datos[2]=rs.getString(2);
-                datos[3]=rs.getString(3);
-                datos[4]=rs.getString(4);
-                datos[5]=rs.getString(5);
-                proveedor.addRow(datos);
-            }
-            jTable20.setModel(proveedor);
-        } catch (SQLException ex) {
-            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    
-    }
+
 void buscarProveedor(int codProve,String nombreProv ){
     DefaultTableModel buscaProveedor= new DefaultTableModel();
     buscaProveedor.addColumn("C. Proveedor");
@@ -223,7 +190,7 @@ void buscarProveedor(int codProve,String nombreProv ){
                 buscaProveedor.addRow(datos);
                 jtxtDirecProveBuscar.setText(datos[6]=rs.getString(6));
             }
-            jTable20.setModel(buscaProveedor);
+            jTable21.setModel(buscaProveedor);
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -232,7 +199,7 @@ void buscarProveedor(int codProve,String nombreProv ){
     
 void modificaProveedor(int codModProve,String nombreModProv ){
     
-    DefaultTableModel modifProveedor= new DefaultTableModel();
+    /*DefaultTableModel modifProveedor= new DefaultTableModel();
     modifProveedor.addColumn("C. Proveedor");
     modifProveedor.addColumn("Empresa");
     modifProveedor.addColumn("Ced.Jurídica");
@@ -242,9 +209,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     
     jTablaModifProve.setModel(modifProveedor);
     
-    String sql="";
     
-
+    */
+        String sql="";
        if(codModProve != 0 && nombreModProv.equals("")){
             sql="SELECT * FROM proveedores WHERE codigo_proveedor='"+codModProve+"'";
     }else{
@@ -258,12 +225,12 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             while(rs.next()){
                 datos[0]=rs.getString(7);
                 
-                datos[1]=rs.getString(1);
+                /*                datos[1]=rs.getString(1);
                 datos[2]=rs.getString(2);
                 datos[3]=rs.getString(3);
                 datos[4]=rs.getString(4);
                 datos[5]=rs.getString(5);
-                modifProveedor.addRow(datos);
+                modifProveedor.addRow(datos);*/
                 jModifCodigo.setText(datos[0]=rs.getString(7));
                 jModifNom.setText(datos[3]=rs.getString(3));
                 jModifApel.setText(datos[4]=rs.getString(4));
@@ -271,8 +238,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                 jModifCedJur.setText(datos[2]=rs.getString(2));
                 jModifTel.setText(datos[5]=rs.getString(5));
                 jDirecProveModif.setText(datos[6]=rs.getString(6));
+                //jModifCodProve.setText(datos[0]=rs.getString(7));
             }
-            jTablaModifProve.setModel(modifProveedor);
+           // jTablaModifProve.setModel(modifProveedor);
         } catch (SQLException ex) {
             Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -287,8 +255,15 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         NProveedor01.setText("");
         jTextAreaDir.setText("");
     }
-    void actualizarProveedor(){
-
+    void actualizarProveedor(int codigo){
+    try {
+        PreparedStatement pst = cn.prepareStatement("UPDATE proveedores SET empresa='"+jModifEmpresa.getText()+"',ced_juridica='"+jModifCedJur.getText()+"',nombre_contacto='"+jModifNom.getText()+"',apel_contacto='"+jModifApel.getText()+"',telefono='"+jModifTel.getText()+"',direccion='"+jDirecProveModif.getText()+"', WHERE codigo_proveedor='"+jModifCodProve.getText()+"'");
+        pst.executeUpdate();
+       System.out.println("Datos actualizados correctamente");
+       
+    } catch (Exception e) {
+        System.out.print(e.getMessage());
+    }
     }
     //METODOS PARA REGISTRAR
     
@@ -382,7 +357,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel2 = new javax.swing.JLabel();
         TaPa1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         TadP3 = new javax.swing.JTabbedPane();
@@ -478,7 +452,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jtxtNumeroOrden = new javax.swing.JFormattedTextField();
         Pan8 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
+        TableOrden = new javax.swing.JTable();
         lblOrdenCompra = new javax.swing.JLabel();
         btnBuscar = new javax.swing.JButton();
         lblEstado = new javax.swing.JLabel();
@@ -523,7 +497,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         lblTotalOr = new javax.swing.JLabel();
         jtxtDesc = new javax.swing.JFormattedTextField();
         jtxtCode = new javax.swing.JFormattedTextField();
-        jtxtNomb = new javax.swing.JFormattedTextField();
+        jTxtEmpresa = new javax.swing.JFormattedTextField();
         jLabel14 = new javax.swing.JLabel();
         jtxtApe = new javax.swing.JFormattedTextField();
         jtxtCedJ = new javax.swing.JFormattedTextField();
@@ -534,7 +508,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jtxtPrecio = new javax.swing.JFormattedTextField();
         jtxtTotales = new javax.swing.JFormattedTextField();
         jTextField7 = new javax.swing.JTextField();
-        jPanel6 = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel7 = new javax.swing.JPanel();
         lblProveedor01 = new javax.swing.JLabel();
@@ -549,25 +522,12 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jLabela15 = new javax.swing.JLabel();
         jScrollPane23 = new javax.swing.JScrollPane();
         jTextAreaDir = new javax.swing.JTextArea();
-        jScrollPane24 = new javax.swing.JScrollPane();
-        jTable20 = new javax.swing.JTable();
         jLabela10 = new javax.swing.JLabel();
         NProveedor01 = new javax.swing.JTextField();
         jButton3 = new javax.swing.JButton();
         jToggleButton1 = new javax.swing.JToggleButton();
         jtxtNombre01 = new javax.swing.JTextField();
         jtxtApe01 = new javax.swing.JTextField();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
-        jScrollPane26 = new javax.swing.JScrollPane();
-        jTable21 = new javax.swing.JTable();
-        jBuscaCodProve = new javax.swing.JTextField();
-        jBuscaNomProve = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jScrollPane27 = new javax.swing.JScrollPane();
-        jtxtDirecProveBuscar = new javax.swing.JTextArea();
         jPanel9 = new javax.swing.JPanel();
         jLabel13 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
@@ -577,8 +537,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jLabel17 = new javax.swing.JLabel();
         jScrollPane28 = new javax.swing.JScrollPane();
         jDirecProveModif = new javax.swing.JTextArea();
-        jScrollPane29 = new javax.swing.JScrollPane();
-        jTablaModifProve = new javax.swing.JTable();
         jButton8 = new javax.swing.JButton();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
@@ -592,6 +550,17 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jModifEmpresa = new javax.swing.JTextField();
         jModifCedJur = new javax.swing.JTextField();
         jModifTel = new javax.swing.JTextField();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
+        jScrollPane26 = new javax.swing.JScrollPane();
+        jTable21 = new javax.swing.JTable();
+        jBuscaCodProve = new javax.swing.JTextField();
+        jBuscaNomProve = new javax.swing.JTextField();
+        jButton4 = new javax.swing.JButton();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane27 = new javax.swing.JScrollPane();
+        jtxtDirecProveBuscar = new javax.swing.JTextArea();
         jPanel4 = new javax.swing.JPanel();
         lblAdministracion = new java.awt.Label();
         TadP4 = new javax.swing.JTabbedPane();
@@ -728,6 +697,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jScrollPane30 = new javax.swing.JScrollPane();
         jTextArea8 = new javax.swing.JTextArea();
         lblSolicitud = new java.awt.Label();
+        jLabel2 = new javax.swing.JLabel();
         lblBienvenido = new javax.swing.JLabel();
         nombreUsuario = new javax.swing.JLabel();
         btnCerrarSesion = new javax.swing.JButton();
@@ -751,8 +721,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                 formMouseDragged(evt);
             }
         });
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot_1.png"))); // NOI18N
 
         TaPa1.setBackground(new java.awt.Color(255, 255, 255));
         TaPa1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 2, true));
@@ -797,7 +765,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addGap(37, 37, 37)
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 903, Short.MAX_VALUE))
+                    .addComponent(jScrollPane10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 945, Short.MAX_VALUE))
                 .addContainerGap())
         );
         Pan3Layout.setVerticalGroup(
@@ -880,9 +848,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addComponent(lblNumOrde)
                         .addGap(18, 18, 18)
                         .addComponent(jtxtOredesN, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(737, Short.MAX_VALUE))
+                .addContainerGap(779, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan18Layout.createSequentialGroup()
-                .addContainerGap(500, Short.MAX_VALUE)
+                .addContainerGap(542, Short.MAX_VALUE)
                 .addComponent(jButton18, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(268, 268, 268))
             .addComponent(jScrollPane11)
@@ -984,7 +952,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                             .addComponent(jtxtDepar, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                             .addComponent(jtxtSolicitante)))
                     .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 439, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(297, Short.MAX_VALUE))
+                .addContainerGap(339, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan22Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(btnDescontar, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1117,7 +1085,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addGap(49, 49, 49)
                         .addGroup(Pan11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jtxtDescrip)
-                            .addComponent(jComboBoxCategoria, 0, 472, Short.MAX_VALUE)
+                            .addComponent(jComboBoxCategoria, 0, 514, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Pan11Layout.createSequentialGroup()
                                 .addComponent(jtxtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -1248,7 +1216,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                                         .addComponent(lblUbicaciones)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(jComboBoxUbicacionRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(0, 430, Short.MAX_VALUE))
+                        .addGap(0, 472, Short.MAX_VALUE))
                     .addComponent(jScrollPane9))
                 .addContainerGap())
             .addGroup(Pan10Layout.createSequentialGroup()
@@ -1546,10 +1514,10 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addComponent(jtxtNumeroOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(lblPro, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addContainerGap(348, Short.MAX_VALUE))
             .addGroup(Pan7Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 734, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 169, Short.MAX_VALUE))
+                .addGap(0, 211, Short.MAX_VALUE))
         );
         Pan7Layout.setVerticalGroup(
             Pan7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1604,7 +1572,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
 
         TaP2.addTab("Modificar", Pan7);
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        TableOrden.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -1615,7 +1583,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                 "Código", "Descripción", "Cantidad", "Tipo De Unidad", "Precio unitario ¢", "Precio Total ¢", "Cant Entregada"
             }
         ));
-        jScrollPane6.setViewportView(jTable6);
+        jScrollPane6.setViewportView(TableOrden);
 
         lblOrdenCompra.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         lblOrdenCompra.setText("Número de orden de compra");
@@ -1741,7 +1709,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                                         .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(lblApellidos)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 206, Short.MAX_VALUE)
                                         .addComponent(jtxtLast, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(Pan8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(jtxtCon)
@@ -1799,9 +1767,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addGroup(Pan8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblDirections)
                             .addComponent(jtxtDirec, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(Pan8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblTotalOrdenes)
                     .addComponent(jFormattedTextField31, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1883,13 +1851,13 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         }
 
         try {
-            jtxtNomb.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("ULLLLLLLLLLLLL")));
+            jTxtEmpresa.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("ULLLLLLLLLLLLL")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-        jtxtNomb.addActionListener(new java.awt.event.ActionListener() {
+        jTxtEmpresa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtNombActionPerformed(evt);
+                jTxtEmpresaActionPerformed(evt);
             }
         });
 
@@ -1981,7 +1949,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                                             .addComponent(jtxtApe, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(jTextField7)
-                                        .addComponent(jtxtNomb, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))))
+                                        .addComponent(jTxtEmpresa, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)))))
                         .addGap(28, 38, Short.MAX_VALUE)
                         .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTiposU)
@@ -2026,7 +1994,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblNames)
                             .addComponent(lblNum)
-                            .addComponent(jtxtNomb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jTxtEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(Pan6Layout.createSequentialGroup()
                                 .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -2099,6 +2067,29 @@ void modificaProveedor(int codModProve,String nombreModProv ){
 
         TaP2.addTab("Crear", jPanel27);
 
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lblOrdenes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(TaP2)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(lblOrdenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TaP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        TaP2.getAccessibleContext().setAccessibleName("Crear");
+
+        TaPa1.addTab("Órdenes de Compra", jPanel2);
+
         jTabbedPane1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
 
         jPanel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -2145,19 +2136,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jTextAreaDir.setRows(5);
         jScrollPane23.setViewportView(jTextAreaDir);
 
-        jTable20.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {},
-                {},
-                {},
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane24.setViewportView(jTable20);
-
         jLabela10.setText("Código de proveedor");
 
         jButton3.setText("Cargar");
@@ -2173,7 +2151,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane24)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2206,7 +2183,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                                 .addComponent(jLabela10)
                                 .addGap(18, 18, 18)
                                 .addComponent(NProveedor01)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(255, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2251,14 +2228,172 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                             .addComponent(lblTel01))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(14, 14, 14)
-                .addComponent(jScrollPane24, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(498, 498, 498)
+                .addGap(733, 733, 733)
                 .addComponent(jToggleButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("Crear", jPanel7);
+
+        jLabel13.setText("Codigo de Proveedor");
+
+        jLabel15.setText("Nombre de Proveedor");
+
+        jBotonBuscaMod.setText("Buscar");
+        jBotonBuscaMod.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBotonBuscaModActionPerformed(evt);
+            }
+        });
+
+        jModifNomProve.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifNomProveActionPerformed(evt);
+            }
+        });
+
+        jLabel17.setText("Dirección");
+
+        jDirecProveModif.setColumns(20);
+        jDirecProveModif.setRows(5);
+        jScrollPane28.setViewportView(jDirecProveModif);
+
+        jButton8.setText("Modificar");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
+        jLabel22.setText("Nuevo Codigo de Proveedor");
+
+        jLabel23.setText("Empresa");
+
+        jLabel24.setText("Cedula Jurídica");
+
+        jLabel25.setText("Nuevo Nombre del Contacto");
+
+        jModifCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifCodigoActionPerformed(evt);
+            }
+        });
+
+        jModifNom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jModifNomActionPerformed(evt);
+            }
+        });
+
+        jLabel26.setText("Apellido");
+
+        jLabel27.setText("Teléfono");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addComponent(jLabel17)
+                                .addGap(37, 37, 37)
+                                .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel9Layout.createSequentialGroup()
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addComponent(jLabel13)
+                                        .addGap(43, 43, 43)
+                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel15))
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addGap(60, 60, 60)
+                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel22)
+                                            .addComponent(jLabel23)
+                                            .addComponent(jLabel24)
+                                            .addComponent(jLabel27)))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel25)))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel9Layout.createSequentialGroup()
+                                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                            .addComponent(jModifTel, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jModifCedJur, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
+                                                .addComponent(jModifNom, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jLabel26))
+                                            .addComponent(jModifEmpresa))
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(269, 269, 269)
+                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(240, Short.MAX_VALUE))
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel22)
+                            .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jModifNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel26)
+                            .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel25))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel23)
+                    .addComponent(jModifEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel24)
+                            .addComponent(jModifCedJur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(jModifTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addGap(18, 18, 18)
+                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(311, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Modificar", jPanel9);
 
         jLabel10.setText("Codigo de Proveedor");
 
@@ -2297,7 +2432,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jPanel8.setLayout(jPanel8Layout);
         jPanel8Layout.setHorizontalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane26, javax.swing.GroupLayout.DEFAULT_SIZE, 736, Short.MAX_VALUE)
+            .addComponent(jScrollPane26, javax.swing.GroupLayout.DEFAULT_SIZE, 967, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2345,214 +2480,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
 
         jTabbedPane1.addTab("Consultar", jPanel8);
 
-        jLabel13.setText("Codigo de Proveedor");
-
-        jLabel15.setText("Nombre de Proveedor");
-
-        jBotonBuscaMod.setText("Buscar");
-        jBotonBuscaMod.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBotonBuscaModActionPerformed(evt);
-            }
-        });
-
-        jModifNomProve.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jModifNomProveActionPerformed(evt);
-            }
-        });
-
-        jLabel17.setText("Dirección");
-
-        jDirecProveModif.setColumns(20);
-        jDirecProveModif.setRows(5);
-        jScrollPane28.setViewportView(jDirecProveModif);
-
-        jTablaModifProve.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {}
-            },
-            new String [] {
-
-            }
-        ));
-        jScrollPane29.setViewportView(jTablaModifProve);
-
-        jButton8.setText("Modificar");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-
-        jLabel22.setText("Nevo Codigo de Proveedor");
-
-        jLabel23.setText("Empresa");
-
-        jLabel24.setText("Cedula Jurídica");
-
-        jLabel25.setText("Nombre del Contacto");
-
-        jModifCodigo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jModifCodigoActionPerformed(evt);
-            }
-        });
-
-        jModifNom.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jModifNomActionPerformed(evt);
-            }
-        });
-
-        jLabel26.setText("Apellido");
-
-        jLabel27.setText("Teléfono");
-
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane29)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addGap(43, 43, 43)
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel15))
-                        .addGap(60, 60, 60)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel22)
-                            .addComponent(jLabel25)
-                            .addComponent(jLabel23)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel27))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel9Layout.createSequentialGroup()
-                                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(jModifTel, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jModifCedJur, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel9Layout.createSequentialGroup()
-                                        .addComponent(jModifNom, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel26))
-                                    .addComponent(jModifEmpresa))
-                                .addGap(18, 18, 18)
-                                .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(307, 307, 307))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel9Layout.createSequentialGroup()
-                        .addComponent(jLabel17)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel9Layout.createSequentialGroup()
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jModifCodProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel22)
-                            .addComponent(jModifCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel25)
-                    .addComponent(jLabel15)
-                    .addComponent(jModifNomProve, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jModifNom, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel26)
-                            .addComponent(jModifApel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel23)
-                    .addComponent(jModifEmpresa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(jBotonBuscaMod, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel9Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
-                            .addComponent(jModifCedJur, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel27)
-                            .addComponent(jModifTel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                .addComponent(jScrollPane29, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane28, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel17))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(56, 56, 56))
-        );
-
-        jTabbedPane1.addTab("Modificar", jPanel9);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 741, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 162, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 423, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 19, Short.MAX_VALUE))
-        );
-
-        TaP2.addTab("Proveedores ", jPanel6);
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblOrdenes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(TaP2)
-                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(lblOrdenes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(TaP2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
-        TaP2.getAccessibleContext().setAccessibleName("Crear");
-
-        TaPa1.addTab("Órdenes de Compra", jPanel2);
+        TaPa1.addTab("Proveedores", jTabbedPane1);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -2636,7 +2564,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                     .addGroup(Pan15Layout.createSequentialGroup()
                         .addGap(288, 288, 288)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(189, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
         Pan15Layout.setVerticalGroup(
             Pan15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3011,7 +2939,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             .addGroup(Pan13Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 189, Short.MAX_VALUE))
+                .addGap(0, 231, Short.MAX_VALUE))
         );
         Pan13Layout.setVerticalGroup(
             Pan13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3120,7 +3048,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                     .addGroup(Pan14Layout.createSequentialGroup()
                         .addComponent(btnMostrar)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane17, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE))
+                    .addComponent(jScrollPane17, javax.swing.GroupLayout.DEFAULT_SIZE, 901, Short.MAX_VALUE))
                 .addContainerGap())
         );
         Pan14Layout.setVerticalGroup(
@@ -3213,7 +3141,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             .addGroup(Pan25Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(Pan25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane19, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE)
+                    .addComponent(jScrollPane19, javax.swing.GroupLayout.DEFAULT_SIZE, 901, Short.MAX_VALUE)
                     .addGroup(Pan25Layout.createSequentialGroup()
                         .addGroup(Pan25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(btnMuestras)
@@ -3614,10 +3542,20 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         lblNumero.setText("Número de solicitud");
 
         btnBusca.setText("Buscar");
+        btnBusca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscaActionPerformed(evt);
+            }
+        });
 
         lblDescripcion.setText("Descripción");
 
         btnEnviaCambio.setText("Enviar cambios");
+        btnEnviaCambio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviaCambioActionPerformed(evt);
+            }
+        });
 
         try {
             jtxtNumSoli.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("########")));
@@ -3712,6 +3650,8 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         );
 
         TaPa1.addTab("Solicitud de materiales", jPanel23);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Screenshot_1.png"))); // NOI18N
 
         lblBienvenido.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lblBienvenido.setText("Bienvenido");
@@ -3930,75 +3870,67 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtApeActionPerformed
 
-    private void jtxtNombActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNombActionPerformed
+    private void jTxtEmpresaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTxtEmpresaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtNombActionPerformed
+    }//GEN-LAST:event_jTxtEmpresaActionPerformed
 
     private void btnCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
-       Connection conection;
-        
-        ResultSet resultset;
+//Connection miConexion= JavaConnection.GetConnection();
 
-        try {
-            PreparedStatement st = cn.prepareStatement("INSERT INTO Orden_Compra(numero_orden,codigo_material,descripcion,cant_materiales,precio_unit) VALUES (?,?,?,?,?)");
-            st.setString(1,jtxtOrden.getText());
-            st.setString(2,jtxtCode.getText());
-            st.setString(3,jtxtDesc.getText());
-            st.setString(4,jtxtCantidades.getText());
-            st.setString(5,jtxtPrecio.getText());
-        int res = st.executeUpdate();
-        if(res > 0)
+Statement st=null;
+ResultSet rs;
+
+try 
 {
-    JOptionPane.showMessageDialog(null,"Orden cargada");
+    st=(Statement) cn.createStatement();
 
-} else{
-    JOptionPane.showMessageDialog(null,"Error");
-
+    rs=st.executeQuery("select * from Orden_Compra where codigo_material=´"+jTextField7.getText()+"´");
+  if (rs.next())
+  { 
+  
+   jTxtEmpresa.setText(rs.getString("empresa"));
+   jtxtCedJ.setText(rs.getString("ced_juridica "));
+   jtxtCont.setText(rs.getString("contacto"));
+   jtxtApe.setText(rs.getString("apellido"));
+   jtxtTele.setText(rs.getString("telefono"));
+   jtxtDir.setText(rs.getString("direccion"));
+   jtxtOrden.setText(rs.getString("numero_orden"));
+   jtxtCode.setText(rs.getString("codigo_material"));
+   jtxtDesc.setText(rs.getString("descripcion"));
+   jtxtCantidades.setText(rs.getString("cant_materiales"));
+   jtxtPrecio.setText(rs.getString("precio_unit"));
+  
+   
+  }
+  else
+  {
+  JOptionPane.showMessageDialog(this,"No existen registros");
+  }
 }
-        } catch (Exception ex) {
-            System.out.println(ex);
-        }//Connection miConexion=JavaConnection.connect();
-//Statement st = null;
-//ResultSet rs;
 
-//try
-//{
-        //   st=miConexion.createStatement();
-//rs=st.executeQuery("slect * from Orden_Compra where CodProveedor= ´"+codigoprov.getText()+"´");
-//if(rs.next())
-//{
-        // codigo.setText(rs.getString("codigo_proveedor"));
-        //empresa.setText(rs.getString("empresa"));
-        // cedJuridica.setText(rs.getString("cedula_juridica"));
-        //nombre.setText(rs.getString("nombre"));
-        //apellido.setText(rs.getString("apellido"));
-        //telefono.setText(rs.getString("telefono"));
-        //direccion.setText(rs.getString("direccion"));
-        //}
-//else 
-//{
-        //   JOptionPane.showMessageDialog(this,"No existen registros");
-//}
-//}
-//catch(Exception ex)
-//{
-        //   JOptionPane.showMessageDialog(this, ex.getMessage());
-//}
-//finally 
-//{
-        //  try
-        //   {
-        // st.close();
-        // miConexion.close();
-        // }
-        // catch(Exception ex)
-        // {
-        // }
-//}
+catch(Exception ex)
+{
+  
+    JOptionPane.showMessageDialog(this,ex.getMessage());
+}
+
+/*finally
+{
+try
+{
+st.close();
+miConexion.close();
+}
+catch(Exception ex)
+{
+}
+*/
+
+
     }//GEN-LAST:event_btnCargarActionPerformed
 
     private void jtxtLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtLastActionPerformed
@@ -4014,7 +3946,35 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     }//GEN-LAST:event_jtxtEstadoActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+DefaultTableModel modelo = new DefaultTableModel();
+modelo.addColumn("Codigo");
+modelo.addColumn("Descripcion");
+modelo.addColumn("Cantidad");
+modelo.addColumn("Tipo de unidad");
+modelo.addColumn("Precio unitario");
+modelo.addColumn("Precio Total");
+modelo.addColumn("Cant entregada");
+try{
+Statement s = con.connect().createStatement();
+ResultSet rs = s.executeQuery("select * from Orden_Compra where numero_orden = "+jtxtOrdenCOmpre.getText());
+while (rs.next())
+{
+   // Se crea un array que será una de las filas de la tabla.
+   Object [] fila = new Object[7]; 
 
+   // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
+   for (int i=0;i<7;i++)
+      fila[i] = rs.getObject(i+1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
+
+   // Se añade al modelo la fila completa.
+   modelo.addRow(fila);
+}
+
+}
+catch(SQLException e){
+ System.out.println(e.getMessage());
+}        
+TableOrden.setModel(modelo);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarActionPerformed
 
@@ -4033,10 +3993,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private void jBuscaCodProveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBuscaCodProveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jBuscaCodProveActionPerformed
-
-    private void jModifNomProveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifNomProveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jModifNomProveActionPerformed
 
     private void jComboBox15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox15ActionPerformed
         // TODO add your handling code here:
@@ -4144,7 +4100,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             us.setString(6, jTextAreaDir.getText());  
             us.setInt(7, codigoProve);
             us.executeUpdate();
-            MostrarProveedor();
+            //MostrarProveedor();  //Tabla retirada
 
             JOptionPane.showMessageDialog(null, "Datos Guardados");
             
@@ -4153,7 +4109,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         JOptionPane.showMessageDialog(null, "Datos Ingresados Incorrectamente");
         }
     
-    //LimpiarNuevoProveedor();
+    LimpiarNuevoProveedor();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jtxtCedJ01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedJ01ActionPerformed
@@ -4178,11 +4134,13 @@ void modificaProveedor(int codModProve,String nombreModProv ){
      try{  
      if(codProve != 0 && nomProve.equals("")){
         buscarProveedor(codProve, "");
+        jBuscaCodProve.setText("");
         }else{
             if(codProve == 0 && !nomProve.equals("")){
             buscarProveedor(0, nomProve);
+            jBuscaNomProve.setText("");
             }else{
-                JOptionPane.showMessageDialog(null, "Nombre no encontrado");
+                JOptionPane.showMessageDialog(null, "Proveedor no encontrado");
             }
         }
      }
@@ -4192,52 +4150,71 @@ void modificaProveedor(int codModProve,String nombreModProv ){
              }
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void jModifCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifCodigoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jModifCodigoActionPerformed
-
     private void jModifNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifNomActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jModifNomActionPerformed
 
-    private void jBotonBuscaModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscaModActionPerformed
-    //Boton buscar Para modificar Proveedores
-        
-    int codModProve = 0;
-    String nomModProve = "";
-    
-    if(!jModifCodProve.getText().equals("")){
-    codModProve= Integer.parseInt(jModifCodProve.getText());
-    }else{
-        codModProve = 0;
-    }
-    if(!jModifNomProve.getText().equals("")){
-     nomModProve = jModifNomProve.getText();
-    }else{
-     nomModProve = "";
-    }
-    
-     try{  
-     if(codModProve != 0 && nomModProve.equals("")){
-        modificaProveedor(codModProve, "");
-        }else{
-            if(codModProve == 0 && !nomModProve.equals("")){
-            modificaProveedor(0, nomModProve);
-            }else{
-                JOptionPane.showMessageDialog(null, "Nombre no encontrado");
-            }
-        }
-     }
-     catch(Exception e){
-        System.out.println(e.getMessage());
-        JOptionPane.showMessageDialog(null, "Error desconocido"); 
-             }
-    }//GEN-LAST:event_jBotonBuscaModActionPerformed
+    private void jModifCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifCodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jModifCodigoActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-       actualizarProveedor(); //sin implementar
-        
+        int codProve;
+        codProve = Integer.parseInt(jModifCodProve.getText());
+        //jModifCodProve.setText("");
+        actualizarProveedor(codProve);
+
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jModifNomProveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jModifNomProveActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jModifNomProveActionPerformed
+
+    private void jBotonBuscaModActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBotonBuscaModActionPerformed
+        //Boton buscar Para modificar Proveedores
+
+        int codModProve = 0;
+        String nomModProve = "";
+
+        if(!jModifCodProve.getText().equals("")){
+            codModProve= Integer.parseInt(jModifCodProve.getText());
+        }else{
+            codModProve = 0;
+        }
+        if(!jModifNomProve.getText().equals("")){
+            nomModProve = jModifNomProve.getText();
+        }else{
+            nomModProve = "";
+        }
+
+        try{
+            if(codModProve != 0 && nomModProve.equals("")){
+                modificaProveedor(codModProve, "");
+                jModifCodProve.setEditable(false);
+                jModifNomProve.setEditable(false);
+            }else{
+                if(codModProve == 0 && !nomModProve.equals("")){
+                    modificaProveedor(0, nomModProve);
+                    jModifNomProve.setEditable(false);
+                    jModifCodProve.setEditable(false);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Proveedor no encontrado");
+                }
+            }
+        }
+        catch(Exception e){
+            System.out.println(e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error desconocido");
+        }
+    }//GEN-LAST:event_jBotonBuscaModActionPerformed
+
+    private void btnBuscaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscaActionPerformed
+
+    private void btnEnviaCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaCambioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEnviaCambioActionPerformed
     /**
      * @param args the command line arguments
      */
@@ -4296,6 +4273,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JPanel Pan9;
     private javax.swing.JTabbedPane TaP2;
     private javax.swing.JTabbedPane TaPa1;
+    private javax.swing.JTable TableOrden;
     private javax.swing.JTabbedPane TadP3;
     private javax.swing.JTabbedPane TadP4;
     private javax.swing.JTabbedPane TadP5;
@@ -4399,7 +4377,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
@@ -4419,11 +4396,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JScrollPane jScrollPane21;
     private javax.swing.JScrollPane jScrollPane22;
     private javax.swing.JScrollPane jScrollPane23;
-    private javax.swing.JScrollPane jScrollPane24;
     private javax.swing.JScrollPane jScrollPane26;
     private javax.swing.JScrollPane jScrollPane27;
     private javax.swing.JScrollPane jScrollPane28;
-    private javax.swing.JScrollPane jScrollPane29;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane30;
     private javax.swing.JScrollPane jScrollPane4;
@@ -4445,7 +4420,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JTabbedPane jTaPa9;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane6;
-    private javax.swing.JTable jTablaModifProve;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable11;
     private javax.swing.JTable jTable12;
@@ -4457,12 +4431,10 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JTable jTable18;
     private javax.swing.JTable jTable19;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable20;
     private javax.swing.JTable jTable21;
     private javax.swing.JTable jTable3;
     private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
     private javax.swing.JTable jTable9;
     private javax.swing.JTextArea jTextArea1;
@@ -4475,6 +4447,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JFormattedTextField jTxtEmpresa;
     private javax.swing.JTextField jTxtEmpresa01;
     private javax.swing.JFormattedTextField jtxtApe;
     private javax.swing.JTextField jtxtApe01;
@@ -4514,7 +4487,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     private javax.swing.JFormattedTextField jtxtNmbr;
     private javax.swing.JFormattedTextField jtxtNom;
     private javax.swing.JFormattedTextField jtxtNom1;
-    private javax.swing.JFormattedTextField jtxtNomb;
     private javax.swing.JFormattedTextField jtxtNombre;
     private javax.swing.JTextField jtxtNombre01;
     private javax.swing.JFormattedTextField jtxtNumSoli;
