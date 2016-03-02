@@ -1,4 +1,5 @@
 
+import com.sun.glass.events.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +22,7 @@ import javax.swing.JOptionPane;
  */
 public class Login extends javax.swing.JFrame {
  DB.JavaConnection con = new DB.JavaConnection();
+
     /**
      * Creates new form Login
      */
@@ -70,6 +72,15 @@ setLocationRelativeTo(null);
         lblContraseñas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         lblContraseñas.setText("Contraseña");
 
+        jtxtContra.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtxtContraKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtContraKeyTyped(evt);
+            }
+        });
+
         btnEntrar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnEntrar.setText("Entrar");
         btnEntrar.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +98,11 @@ setLocationRelativeTo(null);
         jtxtNomU.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtxtNomUActionPerformed(evt);
+            }
+        });
+        jtxtNomU.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtxtNomUKeyTyped(evt);
             }
         });
 
@@ -109,7 +125,7 @@ setLocationRelativeTo(null);
                 .addComponent(jLabel2)
                 .addGap(144, 144, 144))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panLoginLayout.createSequentialGroup()
-                .addContainerGap(50, Short.MAX_VALUE)
+                .addContainerGap(70, Short.MAX_VALUE)
                 .addGroup(panLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panLoginLayout.createSequentialGroup()
                         .addComponent(lblSistema)
@@ -152,17 +168,13 @@ setLocationRelativeTo(null);
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(panLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(panLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(panLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 22, Short.MAX_VALUE))
         );
 
         pack();
@@ -170,51 +182,7 @@ setLocationRelativeTo(null);
 
     
     
-    private boolean validarLogin(String username, String pass) throws SQLException{//yolo
-  
-        /*String username = jtxtNomU.getText();*/
-            System.out.println(username);
-            /*String pass =  String.valueOf(jtxtContra.getPassword());*/
-            System.out.println(pass);
-              String user1="";
-              String pass1="";
-        try{
-            
-            String sql = "SELECT nickname_login,contraseña FROM usuario WHERE nickname_login = '"+username+"' and contraseña = '"+pass+"'";
-            System.out.println(sql);
-            PreparedStatement us = con.connect().prepareStatement(sql);           
-                try (ResultSet res = us.executeQuery()) {
-                    while (res.next()) {
-                        user1 = res.getString("nickname_login");
-                        pass1 = res.getString("contraseña");
-                        System.out.println(res.getString("nickname_login"));
-                        System.out.println(res.getString("contraseña"));
-                    }
-                    if (username.equals(user1) && pass.equals(pass1)) {
-                        JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
-                        return true;
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
-                        
-                    }   }    
-        }catch(SQLException E){
-        System.out.println("rekt");
-        
-            String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
-            System.out.println(sql);
-           PreparedStatement ps = con.connect().prepareStatement(sql);           
-           ResultSet rs = ps.executeQuery();
-           if(rs.next()) {
-           String nom = rs.getString(1);
-           String ap = rs.getString(2);
-           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores");
-            
-           }
-        return true;//cambiar     
-    }
-     return false;  
-    }
+   
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
      String username = jtxtNomU.getText();
@@ -234,6 +202,24 @@ setLocationRelativeTo(null);
     private void jtxtNomUActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtNomUActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtNomUActionPerformed
+
+    private void jtxtContraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtContraKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtContraKeyPressed
+
+    private void jtxtNomUKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtNomUKeyTyped
+        char teclaPress = evt.getKeyChar();
+        if(teclaPress==KeyEvent.VK_ENTER){
+        btnEntrar.doClick();
+        }
+    }//GEN-LAST:event_jtxtNomUKeyTyped
+
+    private void jtxtContraKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtContraKeyTyped
+        char teclaPress = evt.getKeyChar();
+        if(teclaPress==KeyEvent.VK_ENTER){
+        btnEntrar.doClick();
+        }
+    }//GEN-LAST:event_jtxtContraKeyTyped
 
     /**
      * @param args the command line arguments
@@ -284,4 +270,60 @@ setLocationRelativeTo(null);
     private javax.swing.JLabel lblSistema;
     private javax.swing.JPanel panLogin;
     // End of variables declaration//GEN-END:variables
-}
+ 
+    private boolean validarLogin(String username, String pass) throws SQLException{//yolo
+  
+        
+            System.out.println(username);
+          
+            System.out.println(pass);
+              String user1="";
+              String pass1="";
+        try{
+            
+            String sql = "SELECT nickname_login,contraseña FROM usuario WHERE nickname_login = '"+username+"' and contraseña = '"+pass+"'";
+            System.out.println(sql);
+            PreparedStatement us = con.connect().prepareStatement(sql);           
+                try (ResultSet res = us.executeQuery()) {
+                    while (res.next()) {
+                        user1 = res.getString("nickname_login");
+                        pass1 = res.getString("contraseña");
+                        System.out.println(res.getString("nickname_login"));
+                        System.out.println(res.getString("contraseña"));
+                    }
+                    if (username.equals(user1) && pass.equals(pass1)) {
+                        
+        System.out.println("rekt");
+        
+            sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
+            System.out.println(sql);
+           PreparedStatement ps = con.connect().prepareStatement(sql);           
+           ResultSet rs = ps.executeQuery();
+           
+           if(rs.next()) {
+           String nom = rs.getString(1);
+           String ap = rs.getString(2);
+           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores");
+            return true;
+                         }
+           }else{if(!username.equals(user1) && !pass.equals(pass1)){
+                JOptionPane.showMessageDialog(this,"Contraseña y/o Usuario incorrecto","Error",JOptionPane.ERROR_MESSAGE);
+           }else{if(username.equals("") && pass.equals("")){
+                JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña","Error",JOptionPane.ERROR_MESSAGE);
+           }
+           }
+                   
+                    }
+                }    
+        }catch(SQLException E){
+
+           
+           JOptionPane.showMessageDialog(this,"Error");
+           return false;
+           }
+        return false;     
+    }
+     
+    }
+
+
