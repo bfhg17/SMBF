@@ -8,6 +8,8 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 
 
@@ -28,8 +30,10 @@ public class Login extends javax.swing.JFrame {
      * Creates new form Login
      */
     public Login() {
+        setUndecorated(true);
         initComponents();
            con.connect();
+         
 setLocationRelativeTo(null);
    
     }
@@ -57,7 +61,7 @@ setLocationRelativeTo(null);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema de Bodega Municipalidad de Flores");
 
-        panLogin.setBackground(new java.awt.Color(255, 255, 255));
+        panLogin.setBackground(new java.awt.Color(153, 204, 255));
         panLogin.setBorder(javax.swing.BorderFactory.createMatteBorder(2, 2, 2, 2, new java.awt.Color(0, 102, 153)));
         panLogin.setForeground(new java.awt.Color(0, 102, 102));
         panLogin.setToolTipText("");
@@ -173,9 +177,7 @@ setLocationRelativeTo(null);
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 22, Short.MAX_VALUE))
+            .addComponent(panLogin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -186,10 +188,9 @@ setLocationRelativeTo(null);
    
     
     private void btnEntrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntrarActionPerformed
-     String username = jtxtNomU.getText();
-     String pass =  String.valueOf(jtxtContra.getPassword());   
-        try {
-         if( validarLogin(username,pass) == true){
+
+          try {
+             if( validarLogin() == true){
              new Principal().setVisible(true);
              this.setVisible(false);
              
@@ -254,7 +255,13 @@ setLocationRelativeTo(null);
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Login().setVisible(true);
+                try {
+                UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");   
+                     new Login().setVisible(true);
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+                    Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+                }
+               
             }
         });
     }
@@ -272,11 +279,11 @@ setLocationRelativeTo(null);
     private javax.swing.JPanel panLogin;
     // End of variables declaration//GEN-END:variables
  
-    private boolean validarLogin(String username, String pass) throws SQLException{//yolo
+     private boolean validarLogin() throws SQLException{//yolo
   
-        
+            String username = jtxtNomU.getText();
             System.out.println(username);
-          
+            String pass =  String.valueOf(jtxtContra.getPassword());
             System.out.println(pass);
               String user1="";
               String pass1="";
@@ -285,44 +292,38 @@ setLocationRelativeTo(null);
             String sql = "SELECT nickname_login,contraseña FROM usuario WHERE nickname_login = '"+username+"' and contraseña = '"+pass+"'";
             System.out.println(sql);
             PreparedStatement us = con.connect().prepareStatement(sql);           
-                try (ResultSet res = us.executeQuery()) {
-                    while (res.next()) {
-                        user1 = res.getString("nickname_login");
-                        pass1 = res.getString("contraseña");
-                        System.out.println(res.getString("nickname_login"));
-                        System.out.println(res.getString("contraseña"));
-                    }
-                    if (username.equals(user1) && pass.equals(pass1)) {
-                        
+            ResultSet res = us.executeQuery();
+            
+           while (res.next()) {
+                user1 = res.getString("nickname_login");
+                pass1 = res.getString("contraseña");
+           System.out.println(res.getString("nickname_login"));
+           System.out.println(res.getString("contraseña"));
+            }
+            if (username.equals(user1) && pass.equals(pass1)) {
+            JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña");
+            return false;
+            }
+            else{
+            JOptionPane.showMessageDialog(this,"Incorrect login or password","Error",JOptionPane.ERROR_MESSAGE);
+
+            }
+            res.close();    
+        }catch(SQLException E){
         System.out.println("rekt");
         
-            sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
+            String sql = "SELECT nombre,apellido FROM usuario WHERE nickname_login = '"+username+"'";
             System.out.println(sql);
-           PreparedStatement ps = con.connect().prepareStatement(sql);           
+            PreparedStatement ps = con.connect().prepareStatement(sql);           
            ResultSet rs = ps.executeQuery();
-           
            if(rs.next()) {
            String nom = rs.getString(1);
            String ap = rs.getString(2);
-           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores");
-            return true;
-                         }
-           }else{if(!username.equals(user1) && !pass.equals(pass1)){
-                JOptionPane.showMessageDialog(this,"Contraseña y/o Usuario incorrecto","Error",JOptionPane.ERROR_MESSAGE);
-           }else{if(username.equals("") && pass.equals("")){
-                JOptionPane.showMessageDialog(this,"Ingresa tu nombre de usuario y Contraseña","Error",JOptionPane.ERROR_MESSAGE);
+           JOptionPane.showMessageDialog(this,"Bienvenido "+nom+" "+ap+" al Sistema de Bodega de la Municipalidad de Flores"); 
            }
-           }
-                   
-                    }
-                }    
-        }catch(SQLException E){
-
-           
-           JOptionPane.showMessageDialog(this,"Error");
-           return false;
-           }
-        return false;     
+        return true;//cambiar     
+    }
+     return false;  
     }
      
     }

@@ -15,7 +15,7 @@ public class JavaConnection {
             try{
             System.out.print("Trying to resolve to DB \n ");
             Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost/sbmf2","root","root"); 
+            con = DriverManager.getConnection("jdbc:mysql://localhost/sbmf2","root",""); 
              System.out.print("Sucessful Conection to DB \n ");        
              }
                 catch(SQLException e){
