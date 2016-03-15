@@ -191,7 +191,11 @@ setLocationRelativeTo(null);
 
           try {
              if( validarLogin() == true){
-             new Principal().setVisible(true);
+                 
+             Principal ventanaP=new Principal();
+             ventanaP.campoUsuario.setText(jtxtNomU.getText());
+             ventanaP.campoUsuario.setVisible(false);
+             ventanaP.setVisible(true);
              this.setVisible(false);
              
          }
