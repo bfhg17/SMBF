@@ -3,15 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Admi_Usuarios.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/DB/JavaConnection.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Material.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/llenarOrden.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Principal.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Inventario.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/nbproject/build-impl.xml</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Logica/Solicitud_de_materiales.java</file>
-            <file>file:/C:/Users/Bradley/Documents/GitHub/SMBF/Main%20Project/src/Login.java</file>
+            <file>file:/C:/Users/josea/Documents/GitHub/SMBF/Main%20Project/src/Login.java</file>
+            <file>file:/C:/Users/josea/Documents/GitHub/SMBF/Main%20Project/src/Principal.java</file>
+            <file>file:/C:/Users/josea/Documents/GitHub/SMBF/Main%20Project/src/DB/JavaConnection.java</file>
+            <file>file:/C:/Users/josea/Documents/GitHub/SMBF/Main%20Project/src/Logica/Proveedor.java</file>
         </group>
     </open-files>
 </project-private>

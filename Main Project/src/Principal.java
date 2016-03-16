@@ -30,21 +30,25 @@ public class Principal extends javax.swing.JFrame {
     int x,y; 
     DateFormat dateFormat;
     Calendar cal = Calendar.getInstance();
+     String datosProveedor[]=new String[8]; 
     /**
      * Creates new form NewJFrame
      */
     DefaultTableModel modeloTablaNuevoMaterial;
     DefaultTableModel modeloTablaBusquedaEspecifica;
     DefaultTableModel modeloTablaRegistrar;
+    DefaultTableModel modeloTablaCrearOrden;
     DB.JavaConnection con = new DB.JavaConnection();
-    //JavaConnection con= new JavaConnection(); //probando
+    
     Connection cn= con.connect();
+    int codProve=0;
     
     public Principal() {
         this.dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         modeloTablaNuevoMaterial = new DefaultTableModel(null,getColumnasInventario());
         modeloTablaBusquedaEspecifica = new DefaultTableModel(null,getColumnasInventario());
         modeloTablaRegistrar = new DefaultTableModel(null,getColumnasInventario());
+        modeloTablaCrearOrden=new DefaultTableModel(null,getColumnasOrden());
         setUndecorated(true);
         initComponents();
        setExtendedState(MAXIMIZED_BOTH);
@@ -53,7 +57,11 @@ public class Principal extends javax.swing.JFrame {
        this.getContentPane().setBackground(Color.white);
     }
 
+    private String[] getColumnasOrden(){//b
     
+    String columna[] = new String[]{"Fecha","Cantidad","Tipo de Unidad","Descripcion","Precio unitario","Precio Total"};
+    return columna;
+    }
     private String[] getColumnasInventario(){//b
     
     String columna[] = new String[]{"ID","Nombre","Categoría","Tipo de Unidad","Cantidad Mínima","Cantidad en Stock","Ubicación","Última Fecha de Registro"};
@@ -173,6 +181,35 @@ evt.consume();
     }
     
     //metodo para ingresar proveedores
+    
+    void ingresaProveedor(){
+         int codigoProve= Integer.parseInt(NProveedor01.getText());
+    try{
+           PreparedStatement us = cn.prepareStatement("INSERT INTO proveedores(empresa,ced_juridica,nombre_contacto,apel_contacto,telefono,direccion,codigo_proveedor,categoria) VALUES (?,?,?,?,?,?,?,?)");
+          
+ 
+            
+            us.setString(1, jTxtEmpresa01.getText());
+            us.setString(2, jtxtCedJ01.getText());
+            us.setString(3, jtxtNombre01.getText());
+            us.setString(4, jtxtApe01.getText());
+            us.setString(5, jtxtTele01.getText());
+            
+            us.setString(6, jTextAreaDir.getText());  
+            us.setInt(7, codigoProve);
+            us.setString(8, jTextCategoria.getText());
+            us.executeUpdate();
+            //MostrarProveedor();  //Tabla retirada
+
+            JOptionPane.showMessageDialog(null, "Datos Guardados");
+            
+    }  catch(SQLException | HeadlessException e){
+        System.out.println(e.getMessage());
+        JOptionPane.showMessageDialog(null, "Datos Ingresados Incorrectamente");
+        }
+    
+    LimpiarNuevoProveedor();
+}
 
 void buscarProveedor(int codProve,String nombreProv ){
     DefaultTableModel buscaProveedor= new DefaultTableModel();
@@ -263,16 +300,38 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jTextAreaDir.setText("");
         jTextCategoria.setText("");
     }
-    void actualizarProveedor(int codigo){
-    try {
-        PreparedStatement pst = cn.prepareStatement("UPDATE proveedores SET empresa='"+jModifEmpresa.getText()+"',ced_juridica='"+jModifCedJur.getText()+"',nombre_contacto='"+jModifNom.getText()+"',apel_contacto='"+jModifApel.getText()+"',telefono='"+jModifTel.getText()+"',direccion='"+jDirecProveModif.getText()+"',categoria='"+jModifCategoria.getText()+"', WHERE codigo_proveedor='"+jModifCodProve.getText()+"'");
-        pst.executeUpdate();
-       System.out.println("Datos actualizados correctamente");
+    void actualizarProveedor(){
+        
+       int codigoProve= Integer.parseInt(jModifCodigo.getText());
        
-    } catch (Exception e) {
-        System.out.print(e.getMessage());
+      // us = cn.prepareStatement("DELETE * from proveedores WHERE codigo_proveedor=" +codigo);
+    try{
+        PreparedStatement us = cn.prepareStatement("INSERT INTO proveedores(empresa,ced_juridica,nombre_contacto,apel_contacto,telefono,direccion,codigo_proveedor,categoria) VALUES (?,?,?,?,?,?,?,?)");
+          
+ 
+            
+            us.setString(1, jModifEmpresa.getText());
+            us.setString(2, jModifCedJur.getText());
+            us.setString(3, jModifNom.getText());
+            us.setString(4, jModifApel.getText());
+            us.setString(5, jModifTel.getText());
+            
+            us.setString(6, jDirecProveModif.getText());  
+            us.setInt(7, codigoProve);
+            us.setString(8, jModifCategoria.getText());
+            us.executeUpdate();
+            
+
+            JOptionPane.showMessageDialog(null, "Datos Guardados");
+            
+    }  catch(SQLException | HeadlessException e){
+        System.out.println(e.getMessage());
+        JOptionPane.showMessageDialog(null, "Datos Ingresados Incorrectamente");
+        }
+    
+    //LimpiarNuevoProveedor();
     }
-    }
+    
     //METODOS PARA REGISTRAR
     
     void BuscarCod(JTextField h,JTextField g){
@@ -356,6 +415,28 @@ void modificaProveedor(int codModProve,String nombreModProv ){
      
         }
     }
+    
+        String obtenerTipo(String Cod){
+        String tipo="ERROR";
+        String sql="SELECT tipoUnidad from material WHERE id_material ="+Cod;
+        try{
+        
+        
+        PreparedStatement us = con.connect().prepareStatement(sql);
+        ResultSet rs=us.executeQuery();
+        
+     while(rs.next()){
+      tipo=rs.getString("tipoUnidad");
+     }
+        return tipo;
+       
+    }  catch(SQLException e){
+        System.out.println("Error Mysql");
+     System.out.println(sql);
+        }
+        return tipo;
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -450,10 +531,10 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jtxtTele = new javax.swing.JFormattedTextField();
         jtxtDir = new javax.swing.JFormattedTextField();
         jtxtOrden = new javax.swing.JFormattedTextField();
-        jtxtCantidades = new javax.swing.JFormattedTextField();
         jtxtPrecio = new javax.swing.JFormattedTextField();
         jtxtTotales = new javax.swing.JFormattedTextField();
         jTextField7 = new javax.swing.JTextField();
+        jSpinner2 = new javax.swing.JSpinner();
         jPanel4 = new javax.swing.JPanel();
         TadP4 = new javax.swing.JTabbedPane();
         Pan15 = new javax.swing.JPanel();
@@ -570,7 +651,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
-        jComboBox15 = new javax.swing.JComboBox<String>();
+        jComboBox15 = new javax.swing.JComboBox<>();
         Pan20 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
@@ -1230,7 +1311,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jtxtDesc.setToolTipText("Digite el nombre del material");
 
         try {
-            jtxtCode.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#.#.#.##.##")));
+            jtxtCode.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("####")));
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
@@ -1303,18 +1384,6 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
-
-        try {
-            jtxtCantidades.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("###")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-        jtxtCantidades.setToolTipText("Sólo números");
-        jtxtCantidades.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtxtCantidadesKeyTyped(evt);
-            }
-        });
 
         jtxtPrecio.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("¢###########"))));
         jtxtPrecio.setToolTipText("Precio de material por unidad");
@@ -1390,12 +1459,13 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                 .addGap(32, 32, 32)
                 .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jComboBox5, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtxtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtxtCantidades, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(jtxtCode, javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jtxtOrden, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 95, Short.MAX_VALUE))
-                    .addComponent(jtxtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jSpinner2, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jtxtPrecio, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 99, Short.MAX_VALUE)))
                 .addGap(40, 40, 40))
             .addGroup(Pan6Layout.createSequentialGroup()
                 .addGroup(Pan6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1472,7 +1542,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                         .addGap(6, 6, 6)
                         .addComponent(jtxtDesc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtxtCantidades, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jSpinner2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jtxtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(56, Short.MAX_VALUE))
@@ -2055,7 +2125,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addGap(0, 0, 0)
-                .addComponent(TadP7, javax.swing.GroupLayout.DEFAULT_SIZE, 1034, Short.MAX_VALUE)
+                .addComponent(TadP7)
                 .addGap(29, 29, 29))
         );
         jPanel16Layout.setVerticalGroup(
@@ -2102,7 +2172,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(TadP5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1068, Short.MAX_VALUE)
+            .addComponent(TadP5, javax.swing.GroupLayout.Alignment.TRAILING)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2299,7 +2369,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
             }
         });
 
-        jComboBox15.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Alcaldía", "Vicealcaldía", "Proveeduría", "Bodega", "Departamento de TI" }));
+        jComboBox15.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Alcaldía", "Vicealcaldía", "Proveeduría", "Bodega", "Departamento de TI" }));
         jComboBox15.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox15ActionPerformed(evt);
@@ -3753,56 +3823,24 @@ void modificaProveedor(int codModProve,String nombreModProv ){
     }//GEN-LAST:event_btnCrearActionPerformed
 
     private void btnCargarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarActionPerformed
-//Connection miConexion= JavaConnection.GetConnection();
+obtener_informacion_proveedor();
 
-Statement st=null;
-ResultSet rs;
 
-try 
-{
-    st=(Statement) cn.createStatement();
 
-    rs=st.executeQuery("select * from Orden_Compra where codigo_material=´"+jTextField7.getText()+"´");
-  if (rs.next())
-  { 
-  
-   jTxtEmpresa.setText(rs.getString("empresa"));
-   jtxtCedJ.setText(rs.getString("ced_juridica "));
-   jtxtCont.setText(rs.getString("contacto"));
-   jtxtApe.setText(rs.getString("apellido"));
-   jtxtTele.setText(rs.getString("telefono"));
-   jtxtDir.setText(rs.getString("direccion"));
-   jtxtOrden.setText(rs.getString("numero_orden"));
-   jtxtCode.setText(rs.getString("codigo_material"));
-   jtxtDesc.setText(rs.getString("descripcion"));
-   jtxtCantidades.setText(rs.getString("cant_materiales"));
-   jtxtPrecio.setText(rs.getString("precio_unit"));
-  
-   
-  }
-  else
-  {
-  JOptionPane.showMessageDialog(this,"No existen registros");
-  }
-}
+//String codProve=jTextField7.getText();
+String numOrden=jtxtOrden.getText();
+String tipoUni=jComboBox5.getSelectedItem().toString();
+String codProd=jtxtCode.getText();
+int cant=Integer.parseInt(jSpinner2.getValue().toString());
+String tipo=jtxtDesc.getText();
+String desc=obtenerTipo(codProd);
+int precio=Integer.parseInt(jtxtPrecio.getText());
 
-catch(Exception ex)
-{
-  
-    JOptionPane.showMessageDialog(this,ex.getMessage());
-}
+String soli=datosProveedor[7];
+int precioTotal = precio * cant;
 
-/*finally
-{
-try
-{
-st.close();
-miConexion.close();
-}
-catch(Exception ex)
-{
-}
-*/
+modeloTablaCrearOrden.addRow(new Object[]{cant,tipo,desc,codProd,precio, precioTotal});
+jTable3.setModel(modeloTablaCrearOrden);
 
 
     }//GEN-LAST:event_btnCargarActionPerformed
@@ -3893,32 +3931,7 @@ TableOrden.setModel(modelo);
     }//GEN-LAST:event_jTxtEmpresa01ActionPerformed
 //BotonInsertar Proveedor
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-         int codigoProve= Integer.parseInt(NProveedor01.getText());
-    try{
-           PreparedStatement us = cn.prepareStatement("INSERT INTO proveedores(empresa,ced_juridica,nombre_contacto,apel_contacto,telefono,direccion,codigo_proveedor,categoria) VALUES (?,?,?,?,?,?,?,?)");
-          
- 
-            
-            us.setString(1, jTxtEmpresa01.getText());
-            us.setString(2, jtxtCedJ01.getText());
-            us.setString(3, jtxtNombre01.getText());
-            us.setString(4, jtxtApe01.getText());
-            us.setString(5, jtxtTele01.getText());
-            
-            us.setString(6, jTextAreaDir.getText());  
-            us.setInt(7, codigoProve);
-            us.setString(8, jTextCategoria.getText());
-            us.executeUpdate();
-            //MostrarProveedor();  //Tabla retirada
-
-            JOptionPane.showMessageDialog(null, "Datos Guardados");
-            
-    }  catch(SQLException | HeadlessException e){
-        System.out.println(e.getMessage());
-        JOptionPane.showMessageDialog(null, "Datos Ingresados Incorrectamente");
-        }
-    
-    LimpiarNuevoProveedor();
+ingresaProveedor();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jtxtCedJ01ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtCedJ01ActionPerformed
@@ -3968,10 +3981,23 @@ TableOrden.setModel(modelo);
     }//GEN-LAST:event_jModifCodigoActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        int codProve;
+        
         codProve = Integer.parseInt(jModifCodProve.getText());
-        //jModifCodProve.setText("");
-        actualizarProveedor(codProve);
+        
+       
+        try {
+            String sql="DELETE FROM proveedores WHERE codigo_proveedor=" +codProve;
+            PreparedStatement us = con.connect().prepareStatement(sql);
+            System.out.println(sql);
+            int n = us.executeUpdate();
+            if(n>0){
+                JOptionPane.showMessageDialog(null, "Actualizado");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        actualizarProveedor();
 
     }//GEN-LAST:event_jButton8ActionPerformed
 
@@ -4044,10 +4070,6 @@ TableOrden.setModel(modelo);
     private void jtxtCodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtCodeKeyTyped
         SoloNumeros(evt);        // TODO add your handling code here:
     }//GEN-LAST:event_jtxtCodeKeyTyped
-
-    private void jtxtCantidadesKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtCantidadesKeyTyped
-        SoloNumeros(evt);        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtCantidadesKeyTyped
 
     private void jtxtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtxtPrecioKeyTyped
         SoloNumeros(evt);        // TODO add your handling code here:
@@ -4433,6 +4455,7 @@ TableOrden.setModel(modelo);
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JSpinner jSpinner2;
     private javax.swing.JTextField jSpinnerCantidad;
     private javax.swing.JTabbedPane jTaPa9;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -4466,7 +4489,6 @@ TableOrden.setModel(modelo);
     private javax.swing.JFormattedTextField jtxtApel;
     private javax.swing.JFormattedTextField jtxtApel1;
     private javax.swing.JFormattedTextField jtxtApellido;
-    private javax.swing.JFormattedTextField jtxtCantidades;
     private javax.swing.JFormattedTextField jtxtCed;
     private javax.swing.JFormattedTextField jtxtCedJ;
     private javax.swing.JFormattedTextField jtxtCedJ01;
@@ -4611,6 +4633,39 @@ TableOrden.setModel(modelo);
     private javax.swing.JLabel nombreUsuario;
     private javax.swing.JTable tablaNuevoMaterial;
     // End of variables declaration//GEN-END:variables
+
+    private void obtener_informacion_proveedor() {
+           
+        try{
+         String sql = "SELECT nombre_contacto,apel_contacto ,empresa,ced_juridica,telefono,direccion  FROM  proveedores WHERE codigo_proveedor='"+jTextField7.getText().toString()+"'";
+         System.out.println(sql);   
+         PreparedStatement us = con.connect().prepareStatement(sql);
+            ResultSet res = us.executeQuery();
+            
+             while(res.next()){
+                
+      String nombre_contacto=res.getString("nombre proveedor");
+      String apelProveedor=res.getString("apellido proveedor");
+      String empresa=res.getString("departamento");
+      String cedJur=res.getString("departamento");
+      String telefono=res.getString("departamento");
+      String direccion=res.getString("departamento");
+     
+      datosProveedor[0]=nombre_contacto;
+     datosProveedor[1]=apelProveedor;
+     datosProveedor[2]=empresa;
+     datosProveedor[3]=cedJur;
+     datosProveedor[4]=telefono;
+     datosProveedor[5]=direccion;
+      
+     }
+            
+            
+ }
+        
+        catch(SQLException e){
+        System.out.println("Error Mysql");
+        }  }
     
     
 }
