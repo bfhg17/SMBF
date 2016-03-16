@@ -65,7 +65,13 @@ public class Principal extends javax.swing.JFrame {
      return false;
  }
   };
-        modeloTablaModificarSolicitud=new DefaultTableModel(null, getColumnasModificarSolicitud());
+        modeloTablaModificarSolicitud=new DefaultTableModel(null, getColumnasModificarSolicitud()){
+
+ public boolean isCellEditable(int row, int column)
+ {
+     return false;
+ }
+  };
         setUndecorated(true);
         initComponents();
        setExtendedState(MAXIMIZED_BOTH);
@@ -85,7 +91,7 @@ return sdf.format(cal.getTime());
 }//este metodo es para meter la fecha en la base de datos
 
     private String[] getColumnasModificarSolicitud(){
-    String columna[] = new String[]{"Codigo","Cantidad"};
+    String columna[] = new String[]{"ID Material","Cantidad","Nombre"};
     return columna;
     }//son las columnas para el table model de modificar solicitud
     
@@ -744,6 +750,11 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         jScrollPane30 = new javax.swing.JScrollPane();
         jTextArea8 = new javax.swing.JTextArea();
         numSolicitudModificar = new javax.swing.JTextField();
+        cantidadNueva = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        codAntiguo = new javax.swing.JFormattedTextField();
+        codNuevo = new javax.swing.JFormattedTextField();
         jPanel1 = new javax.swing.JPanel();
         TadP3 = new javax.swing.JTabbedPane();
         Pan3 = new javax.swing.JPanel();
@@ -2526,7 +2537,7 @@ void modificaProveedor(int codModProve,String nombreModProv ){
 
         },
         new String [] {
-            "Codigo", "Cantidad"
+            "Codigo", "Cantidad", "Descripcion"
         }
     ));
     jScrollPane5.setViewportView(jTable5);
@@ -2540,9 +2551,9 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         }
     });
 
-    lblDescripcion.setText("Descripción");
+    lblDescripcion.setText("Cantidad nueva");
 
-    btnEnviaCambio.setText("Enviar cambios");
+    btnEnviaCambio.setText("Editar");
     btnEnviaCambio.addActionListener(new java.awt.event.ActionListener() {
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             btnEnviaCambioActionPerformed(evt);
@@ -2559,30 +2570,64 @@ void modificaProveedor(int codModProve,String nombreModProv ){
         }
     });
 
+    cantidadNueva.addKeyListener(new java.awt.event.KeyAdapter() {
+        public void keyTyped(java.awt.event.KeyEvent evt) {
+            cantidadNuevaKeyTyped(evt);
+        }
+    });
+
+    jLabel34.setText("Codigo de material antiguo");
+
+    jLabel35.setText("Codigo de material nuevo");
+
+    try {
+        codAntiguo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("######")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    codAntiguo.setToolTipText("6 caracteres alfanumericos");
+
+    try {
+        codNuevo.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("######")));
+    } catch (java.text.ParseException ex) {
+        ex.printStackTrace();
+    }
+    codNuevo.setToolTipText("6 caracteres alfanumericos");
+
     javax.swing.GroupLayout Pan20Layout = new javax.swing.GroupLayout(Pan20);
     Pan20.setLayout(Pan20Layout);
     Pan20Layout.setHorizontalGroup(
         Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, Pan20Layout.createSequentialGroup()
-            .addGap(0, 0, Short.MAX_VALUE)
-            .addComponent(btnEnviaCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(753, Short.MAX_VALUE))
         .addGroup(Pan20Layout.createSequentialGroup()
-            .addContainerGap(203, Short.MAX_VALUE)
-            .addComponent(lblDescripcion)
-            .addGap(64, 64, 64)
+            .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(Pan20Layout.createSequentialGroup()
+                    .addContainerGap(43, Short.MAX_VALUE)
+                    .addComponent(lblNumero)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(numSolicitudModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(30, 30, 30)
+                    .addComponent(btnBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Pan20Layout.createSequentialGroup()
+                    .addGap(34, 34, 34)
+                    .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lblDescripcion))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(codAntiguo, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                        .addComponent(codNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, 109, Short.MAX_VALUE)
+                        .addComponent(cantidadNueva))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, Pan20Layout.createSequentialGroup()
+                    .addGap(70, 70, 70)
+                    .addComponent(btnEnviaCambio, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(264, 264, 264))
+        .addGroup(Pan20Layout.createSequentialGroup()
+            .addGap(69, 69, 69)
             .addComponent(jScrollPane30, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addContainerGap(130, Short.MAX_VALUE))
-        .addGroup(Pan20Layout.createSequentialGroup()
-            .addGap(104, 104, 104)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 714, javax.swing.GroupLayout.PREFERRED_SIZE))
-        .addGroup(Pan20Layout.createSequentialGroup()
-            .addContainerGap()
-            .addComponent(lblNumero)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addComponent(numSolicitudModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGap(30, 30, 30)
-            .addComponent(btnBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     Pan20Layout.setVerticalGroup(
@@ -2593,18 +2638,28 @@ void modificaProveedor(int codModProve,String nombreModProv ){
                 .addComponent(lblNumero, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnBusca)
                 .addComponent(numSolicitudModificar, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGap(34, 34, 34)
-            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(Pan20Layout.createSequentialGroup()
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                    .addComponent(jScrollPane30, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(77, 77, 77)
-                    .addComponent(btnEnviaCambio))
+                    .addGap(20, 20, 20)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(Pan20Layout.createSequentialGroup()
-                    .addGap(40, 40, 40)
-                    .addComponent(lblDescripcion)))
-            .addGap(408, 408, 408))
+                    .addGap(34, 34, 34)
+                    .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(codAntiguo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel35, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(codNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(18, 18, 18)
+                    .addGroup(Pan20Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(lblDescripcion)
+                        .addComponent(cantidadNueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGap(45, 45, 45)
+                    .addComponent(btnEnviaCambio)))
+            .addGap(100, 100, 100)
+            .addComponent(jScrollPane30, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGap(418, 418, 418))
     );
 
     jTaPa9.addTab("Modificar", Pan20);
@@ -3778,12 +3833,13 @@ void modificaProveedor(int codModProve,String nombreModProv ){
 
     private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
 
-        if(campoJustificacionCrearSolicitud.getText().equals("")){JOptionPane.showMessageDialog(this, "Debe introducir una justificación");}
+        if(campoJustificacionCrearSolicitud.getText().equals("")){JOptionPane.showMessageDialog(this, "Debe introducir una justificación");
+        return;}
         
         
         else if(jTable3.getRowCount()==0){
         JOptionPane.showMessageDialog(this, "No ha introducido materiales");
-        }
+        return;}
         
         else{
             
@@ -4169,7 +4225,10 @@ TableOrden.setModel(modelo);
          modeloTablaModificarSolicitud.setRowCount(0);
 
 
-String sqla="select id_material,cantidad from detalle_solicitud WHERE numero_solicitud="+numSolicitudModificar.getText();
+String sqla="SELECT a.id_material,a.cantidad,b.nombre "
+        + "FROM detalle_solicitud a, material b WHERE "
+        + "a.numero_solicitud="+numSolicitudModificar.getText()+" AND b.id_material=a.id_material";        
+
 
 try{
 Statement sa = con.connect().createStatement();
@@ -4185,10 +4244,10 @@ numSoli=Integer.parseInt(numSolicitudModificar.getText());
 while (rsa.next())
 {
    // Se crea un array que será una de las filas de la tabla.
-   Object [] fila = new Object[2]; 
+   Object [] fila = new Object[3]; 
 
    // Se rellena cada posición del array con una de las columnas de la tabla en base de datos.
-   for (int i=0;i<2;i++)
+   for (int i=0;i<3;i++)
       fila[i] = rsa.getObject(i+1); // El primer indice en rs es el 1, no el cero, por eso se suma 1.
 
    // Se añade al modelo la fila completa.
@@ -4210,36 +4269,56 @@ jTable5.setModel(modeloTablaModificarSolicitud);
 
     private void btnEnviaCambioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviaCambioActionPerformed
 
-String sql="delete from detalle_solicitud WHERE numero_Solicitud="+numSoli;
- System.out.println(sql);
+
+// System.out.println(sql);
  
 if(modeloTablaModificarSolicitud.getRowCount()==0){JOptionPane.showMessageDialog(this, "No ha seleccionado ninguna solicitud");}
 else{ 
-try{
+    
+    if(codAntiguo.getText().equals("")||codNuevo.getText().equals("")||cantidadNueva.getText().equals(""))
+    {
+        JOptionPane.showMessageDialog(this, "Debe rellenar todos los campos");
+    }
+    else{
         
+    for(int row = 0;row < modeloTablaModificarSolicitud.getRowCount();row++) {
+
+if(codAntiguo.getText().equals(modeloTablaModificarSolicitud.getValueAt(row, 0).toString())){
+
+    modeloTablaModificarSolicitud.setValueAt(codNuevo.getText(),row,0);
+     modeloTablaModificarSolicitud.setValueAt(cantidadNueva.getText(),row,1);
+      modeloTablaModificarSolicitud.setValueAt(ObtenerDescripcion(codNuevo.getText()),row,2);
+      
+      
+      
+      try{
+        String sql="UPDATE detalle_solicitud SET id_material= "+codNuevo.getText()+", cantidad="+cantidadNueva.getText()
+                +" WHERE id_material="+codAntiguo.getText()+" and numero_Solicitud="+numSoli;
+        System.out.println(sql);
         PreparedStatement us = con.connect().prepareStatement(sql);
       us.executeUpdate();
       us.close();
       System.out.println("Exito");
+      JOptionPane.showMessageDialog(this, "Modificacion exitosa");
         }
         catch(SQLException e)
         { System.out.println("Error Mysql");
-        System.out.println(sql);}
+        }
 
-for(int row = 0;row < modeloTablaModificarSolicitud.getRowCount();row++) {
-String datos[]=new String[2];
 
-	    for(int col = 0;col < modeloTablaModificarSolicitud.getColumnCount();col++) {
+      
+      
+      
+      
+         return;
 
-	        //System.out.println(modeloTablaCrearSolicitud.getValueAt(row, col));
-                datos[col]=modeloTablaModificarSolicitud.getValueAt(row, col).toString();
-                //System.out.println(datos[col]);
-                
-	    }
-enviarSolic(datos,numSoli);
+}
 	}
-JOptionPane.showMessageDialog(this, "Modificacion exitosa");
-}         
+    
+    JOptionPane.showMessageDialog(this, "El codigo introducido no se encuentra en la solicitud");
+    }
+
+}
 numSolicitudModificar.setText("");
 modeloTablaModificarSolicitud.setRowCount(0);
 
@@ -4518,6 +4597,10 @@ SoloNumeros(evt);        // TODO add your handling code here:
 SoloNumeros(evt);
         // TODO add your handling code here:
     }//GEN-LAST:event_jSpinner2KeyTyped
+
+    private void cantidadNuevaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_cantidadNuevaKeyTyped
+SoloNumeros(evt);        // TODO add your handling code here:
+    }//GEN-LAST:event_cantidadNuevaKeyTyped
     /**
      * @param args the command line arguments
      */
@@ -4607,7 +4690,10 @@ SoloNumeros(evt);
     private javax.swing.JTextField campoConsultaSolicitud;
     private javax.swing.JTextArea campoJustificacionCrearSolicitud;
     public javax.swing.JTextField campoUsuario;
+    private javax.swing.JTextField cantidadNueva;
+    private javax.swing.JFormattedTextField codAntiguo;
     private javax.swing.JFormattedTextField codCrearSolicitud;
+    private javax.swing.JFormattedTextField codNuevo;
     private javax.swing.JButton jBotonBuscaMod;
     private javax.swing.JTextField jBuscaCodProve;
     private javax.swing.JTextField jBuscaNomProve;
@@ -4663,6 +4749,8 @@ SoloNumeros(evt);
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
